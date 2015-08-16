@@ -1,0 +1,416 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E92321CA1B8128E700D79B33 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321C91B8128E700D79B33 /* AppDelegate.m */; };
+		E92321CC1B8128E700D79B33 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321CB1B8128E700D79B33 /* main.m */; };
+		E92321CE1B8128E700D79B33 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E92321CD1B8128E700D79B33 /* Images.xcassets */; };
+		E92321D11B8128E700D79B33 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E92321CF1B8128E700D79B33 /* MainMenu.xib */; };
+		E92321DD1B8128E700D79B33 /* OtaClockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321DC1B8128E700D79B33 /* OtaClockTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E92321D71B8128E700D79B33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E92321BB1B8128E700D79B33 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E92321C21B8128E700D79B33;
+			remoteInfo = OtaClock;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E92321C31B8128E700D79B33 /* OtaClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OtaClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E92321C71B8128E700D79B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E92321C81B8128E700D79B33 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E92321C91B8128E700D79B33 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E92321CB1B8128E700D79B33 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E92321CD1B8128E700D79B33 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		E92321D01B8128E700D79B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		E92321D61B8128E700D79B33 /* OtaClockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OtaClockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E92321DB1B8128E700D79B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E92321DC1B8128E700D79B33 /* OtaClockTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtaClockTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E92321C01B8128E700D79B33 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E92321D31B8128E700D79B33 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E92321BA1B8128E700D79B33 = {
+			isa = PBXGroup;
+			children = (
+				E92321C51B8128E700D79B33 /* OtaClock */,
+				E92321D91B8128E700D79B33 /* OtaClockTests */,
+				E92321C41B8128E700D79B33 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E92321C41B8128E700D79B33 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E92321C31B8128E700D79B33 /* OtaClock.app */,
+				E92321D61B8128E700D79B33 /* OtaClockTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E92321C51B8128E700D79B33 /* OtaClock */ = {
+			isa = PBXGroup;
+			children = (
+				E92321C81B8128E700D79B33 /* AppDelegate.h */,
+				E92321C91B8128E700D79B33 /* AppDelegate.m */,
+				E92321CD1B8128E700D79B33 /* Images.xcassets */,
+				E92321CF1B8128E700D79B33 /* MainMenu.xib */,
+				E92321C61B8128E700D79B33 /* Supporting Files */,
+			);
+			path = OtaClock;
+			sourceTree = "<group>";
+		};
+		E92321C61B8128E700D79B33 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E92321C71B8128E700D79B33 /* Info.plist */,
+				E92321CB1B8128E700D79B33 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E92321D91B8128E700D79B33 /* OtaClockTests */ = {
+			isa = PBXGroup;
+			children = (
+				E92321DC1B8128E700D79B33 /* OtaClockTests.m */,
+				E92321DA1B8128E700D79B33 /* Supporting Files */,
+			);
+			path = OtaClockTests;
+			sourceTree = "<group>";
+		};
+		E92321DA1B8128E700D79B33 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E92321DB1B8128E700D79B33 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E92321C21B8128E700D79B33 /* OtaClock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E92321E01B8128E700D79B33 /* Build configuration list for PBXNativeTarget "OtaClock" */;
+			buildPhases = (
+				E92321BF1B8128E700D79B33 /* Sources */,
+				E92321C01B8128E700D79B33 /* Frameworks */,
+				E92321C11B8128E700D79B33 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OtaClock;
+			productName = OtaClock;
+			productReference = E92321C31B8128E700D79B33 /* OtaClock.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E92321D51B8128E700D79B33 /* OtaClockTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E92321E31B8128E700D79B33 /* Build configuration list for PBXNativeTarget "OtaClockTests" */;
+			buildPhases = (
+				E92321D21B8128E700D79B33 /* Sources */,
+				E92321D31B8128E700D79B33 /* Frameworks */,
+				E92321D41B8128E700D79B33 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E92321D81B8128E700D79B33 /* PBXTargetDependency */,
+			);
+			name = OtaClockTests;
+			productName = OtaClockTests;
+			productReference = E92321D61B8128E700D79B33 /* OtaClockTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E92321BB1B8128E700D79B33 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = xythobuz;
+				TargetAttributes = {
+					E92321C21B8128E700D79B33 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					E92321D51B8128E700D79B33 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = E92321C21B8128E700D79B33;
+					};
+				};
+			};
+			buildConfigurationList = E92321BE1B8128E700D79B33 /* Build configuration list for PBXProject "OtaClock" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E92321BA1B8128E700D79B33;
+			productRefGroup = E92321C41B8128E700D79B33 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E92321C21B8128E700D79B33 /* OtaClock */,
+				E92321D51B8128E700D79B33 /* OtaClockTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E92321C11B8128E700D79B33 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E92321CE1B8128E700D79B33 /* Images.xcassets in Resources */,
+				E92321D11B8128E700D79B33 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E92321D41B8128E700D79B33 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E92321BF1B8128E700D79B33 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E92321CC1B8128E700D79B33 /* main.m in Sources */,
+				E92321CA1B8128E700D79B33 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E92321D21B8128E700D79B33 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E92321DD1B8128E700D79B33 /* OtaClockTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E92321D81B8128E700D79B33 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E92321C21B8128E700D79B33 /* OtaClock */;
+			targetProxy = E92321D71B8128E700D79B33 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E92321CF1B8128E700D79B33 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E92321D01B8128E700D79B33 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E92321DE1B8128E700D79B33 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E92321DF1B8128E700D79B33 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E92321E11B8128E700D79B33 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = OtaClock/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E92321E21B8128E700D79B33 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = OtaClock/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E92321E41B8128E700D79B33 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = OtaClockTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OtaClock.app/Contents/MacOS/OtaClock";
+			};
+			name = Debug;
+		};
+		E92321E51B8128E700D79B33 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = OtaClockTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OtaClock.app/Contents/MacOS/OtaClock";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E92321BE1B8128E700D79B33 /* Build configuration list for PBXProject "OtaClock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E92321DE1B8128E700D79B33 /* Debug */,
+				E92321DF1B8128E700D79B33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E92321E01B8128E700D79B33 /* Build configuration list for PBXNativeTarget "OtaClock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E92321E11B8128E700D79B33 /* Debug */,
+				E92321E21B8128E700D79B33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E92321E31B8128E700D79B33 /* Build configuration list for PBXNativeTarget "OtaClockTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E92321E41B8128E700D79B33 /* Debug */,
+				E92321E51B8128E700D79B33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E92321BB1B8128E700D79B33 /* Project object */;
+}
