@@ -70,7 +70,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="OtaClock" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g" customClass="MainWindow">
+        <window title="OtaClock" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="OtaClock" animationBehavior="default" id="QvC-M9-y7g" customClass="MainWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="235" height="196"/>
@@ -82,6 +82,15 @@
                     <outlet property="menu" destination="v1Z-w4-vhP" id="c20-yu-LsO"/>
                 </connections>
             </view>
+            <connections>
+                <outlet property="changeSize1" destination="Acr-Ff-Lm2" id="qUp-XP-Ffo"/>
+                <outlet property="changeSize2" destination="sRn-WM-cKW" id="luN-Dk-xw4"/>
+                <outlet property="changeSize3" destination="Ynv-fd-dtQ" id="QeL-wH-eAC"/>
+                <outlet property="changeSize4" destination="rKj-Pe-N3u" id="tmN-AZ-egV"/>
+                <outlet property="changeSize5" destination="Qji-aB-KLD" id="a79-d3-RIN"/>
+                <outlet property="keepOnTopItem" destination="bk2-WG-9eq" id="vBf-vA-eXc"/>
+                <outlet property="lockPositionItem" destination="YfQ-b7-bXC" id="CYs-rk-6GP"/>
+            </connections>
             <point key="canvasLocation" x="129.5" y="81"/>
         </window>
         <menu id="v1Z-w4-vhP">
@@ -100,6 +109,24 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="changeSize:" target="QvC-M9-y7g" id="Nvd-gD-ixJ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="3x" id="Ynv-fd-dtQ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="Nrc-zM-1sT"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="4x" id="rKj-Pe-N3u">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="QoN-cm-k5P"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="5x" id="Qji-aB-KLD">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="Y9P-XF-cjZ"/>
                                 </connections>
                             </menuItem>
                         </items>

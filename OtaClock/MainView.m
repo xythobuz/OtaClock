@@ -16,8 +16,6 @@
 @synthesize otaconImage;
 
 -(void)awakeFromNib {
-    NSLog(@"MainView:awakeFromNib %@ %@", self, [self window]);
-    
     // Load background image
     self.otaconImage = [NSImage imageNamed:@"Otacon"];
     
