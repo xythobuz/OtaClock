@@ -11,18 +11,9 @@
 		E92321CC1B8128E700D79B33 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321CB1B8128E700D79B33 /* main.m */; };
 		E92321CE1B8128E700D79B33 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E92321CD1B8128E700D79B33 /* Images.xcassets */; };
 		E92321D11B8128E700D79B33 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E92321CF1B8128E700D79B33 /* MainMenu.xib */; };
-		E92321DD1B8128E700D79B33 /* OtaClockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321DC1B8128E700D79B33 /* OtaClockTests.m */; };
+		E92321E81B8129FD00D79B33 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321E71B8129FD00D79B33 /* MainView.m */; };
+		E92321EB1B812A1000D79B33 /* MainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321EA1B812A1000D79B33 /* MainWindow.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		E92321D71B8128E700D79B33 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E92321BB1B8128E700D79B33 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E92321C21B8128E700D79B33;
-			remoteInfo = OtaClock;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		E92321C31B8128E700D79B33 /* OtaClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OtaClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -32,20 +23,14 @@
 		E92321CB1B8128E700D79B33 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E92321CD1B8128E700D79B33 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E92321D01B8128E700D79B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		E92321D61B8128E700D79B33 /* OtaClockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OtaClockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E92321DB1B8128E700D79B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E92321DC1B8128E700D79B33 /* OtaClockTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtaClockTests.m; sourceTree = "<group>"; };
+		E92321E61B8129FD00D79B33 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
+		E92321E71B8129FD00D79B33 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainView.m; sourceTree = "<group>"; };
+		E92321E91B812A1000D79B33 /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
+		E92321EA1B812A1000D79B33 /* MainWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindow.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		E92321C01B8128E700D79B33 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E92321D31B8128E700D79B33 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -59,7 +44,6 @@
 			isa = PBXGroup;
 			children = (
 				E92321C51B8128E700D79B33 /* OtaClock */,
-				E92321D91B8128E700D79B33 /* OtaClockTests */,
 				E92321C41B8128E700D79B33 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,7 +52,6 @@
 			isa = PBXGroup;
 			children = (
 				E92321C31B8128E700D79B33 /* OtaClock.app */,
-				E92321D61B8128E700D79B33 /* OtaClockTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,6 +63,10 @@
 				E92321C91B8128E700D79B33 /* AppDelegate.m */,
 				E92321CD1B8128E700D79B33 /* Images.xcassets */,
 				E92321CF1B8128E700D79B33 /* MainMenu.xib */,
+				E92321E61B8129FD00D79B33 /* MainView.h */,
+				E92321E71B8129FD00D79B33 /* MainView.m */,
+				E92321E91B812A1000D79B33 /* MainWindow.h */,
+				E92321EA1B812A1000D79B33 /* MainWindow.m */,
 				E92321C61B8128E700D79B33 /* Supporting Files */,
 			);
 			path = OtaClock;
@@ -94,23 +81,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E92321D91B8128E700D79B33 /* OtaClockTests */ = {
-			isa = PBXGroup;
-			children = (
-				E92321DC1B8128E700D79B33 /* OtaClockTests.m */,
-				E92321DA1B8128E700D79B33 /* Supporting Files */,
-			);
-			path = OtaClockTests;
-			sourceTree = "<group>";
-		};
-		E92321DA1B8128E700D79B33 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				E92321DB1B8128E700D79B33 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -121,6 +91,7 @@
 				E92321BF1B8128E700D79B33 /* Sources */,
 				E92321C01B8128E700D79B33 /* Frameworks */,
 				E92321C11B8128E700D79B33 /* Resources */,
+				E92321EC1B8136C200D79B33 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -130,24 +101,6 @@
 			productName = OtaClock;
 			productReference = E92321C31B8128E700D79B33 /* OtaClock.app */;
 			productType = "com.apple.product-type.application";
-		};
-		E92321D51B8128E700D79B33 /* OtaClockTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E92321E31B8128E700D79B33 /* Build configuration list for PBXNativeTarget "OtaClockTests" */;
-			buildPhases = (
-				E92321D21B8128E700D79B33 /* Sources */,
-				E92321D31B8128E700D79B33 /* Frameworks */,
-				E92321D41B8128E700D79B33 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E92321D81B8128E700D79B33 /* PBXTargetDependency */,
-			);
-			name = OtaClockTests;
-			productName = OtaClockTests;
-			productReference = E92321D61B8128E700D79B33 /* OtaClockTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -160,10 +113,6 @@
 				TargetAttributes = {
 					E92321C21B8128E700D79B33 = {
 						CreatedOnToolsVersion = 6.4;
-					};
-					E92321D51B8128E700D79B33 = {
-						CreatedOnToolsVersion = 6.4;
-						TestTargetID = E92321C21B8128E700D79B33;
 					};
 				};
 			};
@@ -181,7 +130,6 @@
 			projectRoot = "";
 			targets = (
 				E92321C21B8128E700D79B33 /* OtaClock */,
-				E92321D51B8128E700D79B33 /* OtaClockTests */,
 			);
 		};
 /* End PBXProject section */
@@ -196,42 +144,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E92321D41B8128E700D79B33 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E92321EC1B8136C200D79B33 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
-/* End PBXResourcesBuildPhase section */
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E92321BF1B8128E700D79B33 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E92321EB1B812A1000D79B33 /* MainWindow.m in Sources */,
 				E92321CC1B8128E700D79B33 /* main.m in Sources */,
 				E92321CA1B8128E700D79B33 /* AppDelegate.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E92321D21B8128E700D79B33 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E92321DD1B8128E700D79B33 /* OtaClockTests.m in Sources */,
+				E92321E81B8129FD00D79B33 /* MainView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		E92321D81B8128E700D79B33 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E92321C21B8128E700D79B33 /* OtaClock */;
-			targetProxy = E92321D71B8128E700D79B33 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E92321CF1B8128E700D79B33 /* MainMenu.xib */ = {
@@ -331,6 +274,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = OtaClock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -342,43 +286,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = OtaClock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		E92321E41B8128E700D79B33 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = OtaClockTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OtaClock.app/Contents/MacOS/OtaClock";
-			};
-			name = Debug;
-		};
-		E92321E51B8128E700D79B33 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = OtaClockTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OtaClock.app/Contents/MacOS/OtaClock";
 			};
 			name = Release;
 		};
@@ -401,14 +310,7 @@
 				E92321E21B8128E700D79B33 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-		};
-		E92321E31B8128E700D79B33 /* Build configuration list for PBXNativeTarget "OtaClockTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E92321E41B8128E700D79B33 /* Debug */,
-				E92321E51B8128E700D79B33 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

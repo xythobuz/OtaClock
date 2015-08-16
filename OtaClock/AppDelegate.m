@@ -11,16 +11,25 @@
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
+
 @end
 
 @implementation AppDelegate
 
+@synthesize statusItem;
+@synthesize mainMenu;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // Insert code here to initialize your application
+    // Create Status Bar Item
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    statusItem.image = [NSImage imageNamed:@"Menu"];
+    statusItem.highlightMode = YES;
+    statusItem.menu = mainMenu; // Use same menu used for right-clicks
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    // Insert code here to tear down your application
+    // Remove Status Bar Item
+    [[NSStatusBar systemStatusBar] removeStatusItem:statusItem];
 }
 
 @end
