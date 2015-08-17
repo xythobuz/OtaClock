@@ -35,6 +35,12 @@
 #define FONT_SMALL_DATE_X2_OFFSET 17
 #define FONT_SMALL_DATE_X3_OFFSET 22
 
+#define FONT_SMALL_ALARM_Y_OFFSET 57
+#define FONT_SMALL_ALARM_X0_OFFSET 29
+#define FONT_SMALL_ALARM_X1_OFFSET 34
+#define FONT_SMALL_ALARM_X2_OFFSET 41
+#define FONT_SMALL_ALARM_X3_OFFSET 46
+
 @interface Render ()
 
 @property (assign) CGImageRef otaconGraphic, bubbleGraphic;
@@ -45,6 +51,7 @@
 
 @property (assign) NSInteger eyeToDraw, dayOfWeek;
 @property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
+@property (assign) NSInteger alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 
 @property (assign) NSSize fullSize;
 @property (assign) CGContextRef drawContext;
@@ -63,6 +70,7 @@
 
 @synthesize eyeToDraw, dayOfWeek;
 @synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
+@synthesize alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 
 @synthesize fullSize;
 @synthesize drawContext;
@@ -234,6 +242,10 @@
     dateDigit1 = 8;
     dateDigit2 = 8;
     dateDigit3 = 8;
+    alarmDigit0 = 8;
+    alarmDigit1 = 8;
+    alarmDigit2 = 8;
+    alarmDigit3 = 8;
     
     return self;
 }
@@ -268,11 +280,6 @@
         dateDigit2 = 0;
         dateDigit3 = [components day];
     }
-    
-    // Check if something changed, if so, set needsDisplay
-    // if (bla) {
-    //     parent.needsDisplay = YES;
-    // }
 }
 
 - (void)drawWithEye:(NSInteger)eyeIndex {
@@ -300,12 +307,18 @@
         size.origin.x = FONT_SMALL_DATE_X0_OFFSET;
         CGContextDrawImage(drawContext, size, fontSmall1);
     }
-    size.origin.x = FONT_SMALL_DATE_X1_OFFSET;
-    CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit1]);
-    size.origin.x = FONT_SMALL_DATE_X2_OFFSET;
-    CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit2]);
-    size.origin.x = FONT_SMALL_DATE_X3_OFFSET;
-    CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit3]);
+    if ((dateDigit1 >= 0) && (dateDigit1 <= 9)) {
+        size.origin.x = FONT_SMALL_DATE_X1_OFFSET;
+        CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit1]);
+    }
+    if ((dateDigit2 >= 0) && (dateDigit2 <= 9)) {
+        size.origin.x = FONT_SMALL_DATE_X2_OFFSET;
+        CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit2]);
+    }
+    if ((dateDigit3 >= 0) && (dateDigit3 <= 9)) {
+        size.origin.x = FONT_SMALL_DATE_X3_OFFSET;
+        CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit3]);
+    }
 
     // Draw Day of Week
     CGImageRef day = [self dayHelper:dayOfWeek];
@@ -316,6 +329,28 @@
     CGContextDrawImage(drawContext, size, day);
     
     // Draw Time
+    
+    
+    // Draw Alarm Time
+    size.size.width = FONT_SMALL_WIDTH;
+    size.size.height = FONT_SMALL_HEIGHT;
+    size.origin.y = FONT_SMALL_ALARM_Y_OFFSET;
+    if ((alarmDigit0 >= 0) && (alarmDigit0 <= 9)) {
+        size.origin.x = FONT_SMALL_ALARM_X0_OFFSET;
+        CGContextDrawImage(drawContext, size, [self smallHelper:alarmDigit0]);
+    }
+    if ((alarmDigit1 >= 0) && (alarmDigit1 <= 9)) {
+        size.origin.x = FONT_SMALL_ALARM_X1_OFFSET;
+        CGContextDrawImage(drawContext, size, [self smallHelper:alarmDigit1]);
+    }
+    if ((alarmDigit2 >= 0) && (alarmDigit2 <= 9)) {
+        size.origin.x = FONT_SMALL_ALARM_X2_OFFSET;
+        CGContextDrawImage(drawContext, size, [self smallHelper:alarmDigit2]);
+    }
+    if ((alarmDigit3 >= 0) && (alarmDigit3 <= 9)) {
+        size.origin.x = FONT_SMALL_ALARM_X3_OFFSET;
+        CGContextDrawImage(drawContext, size, [self smallHelper:alarmDigit3]);
+    }
     
     // Draw Otacon
     size.size.width = CGImageGetWidth(otaconGraphic);
@@ -335,6 +370,7 @@
     CGImageRef drawnImage = CGBitmapContextCreateImage(drawContext);
     NSImage *result = [[NSImage alloc] initWithCGImage:drawnImage size:fullSize];
     [result drawInRect:[view bounds] fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:NO hints:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:NSImageInterpolationNone] forKey:NSImageHintInterpolation]];
+    CGImageRelease(drawnImage);
 }
 
 @end
