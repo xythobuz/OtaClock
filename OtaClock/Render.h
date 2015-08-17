@@ -8,12 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class MainView;
+
 @interface Render : NSObject
 
-- (id)init;
+- (id)initWithParent:(MainView *)par;
 - (NSSize)baseSize;
 
-- (void)drawWith:(NSInteger)eyeIndex;
+- (void)drawWithDate:(NSDate *)date;
+- (void)drawWithEye:(NSInteger)eyeIndex;
 - (void)drawInto:(NSView *)view;
 
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 xythobuz. All rights reserved.
 //
 
+#import "Render.h"
 #import "MainWindow.h"
 #import "MainView.h"
 
@@ -18,7 +19,7 @@
 @synthesize render;
 
 -(void)awakeFromNib {
-    render = [[Render alloc] init];
+    render = [[Render alloc] initWithParent:self];
     [(MainWindow*)[self window] setDefaultBackgroundSize:[render baseSize]]; // Set window to a useful default size
 }
 

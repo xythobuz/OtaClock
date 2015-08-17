@@ -117,16 +117,24 @@
     if (startScale == 4) [self.changeSize4 setState:NSOnState];
     if (startScale == 5) [self.changeSize5 setState:NSOnState];
     
-    [[self.mainView render] drawWith:lastEyeState]; // Initialize render image
+    [[self.mainView render] drawWithEye:lastEyeState]; // Initialize render image
     [self unblink]; // Schedule next blinking
     
+    // Start time keeping
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateTime:) userInfo:nil repeats:YES];
+    [self updateTime:nil];
+    
     [self setFrame:frame display:YES];
+}
+
+- (void)updateTime:(id)sender {
+    [[self.mainView render] drawWithDate:[NSDate date]];
 }
 
 - (void)blink {
     if (currentlyBlinking == NO) {
         currentlyBlinking = YES;
-        [[self.mainView render] drawWith:EYE_BLINK];
+        [[self.mainView render] drawWithEye:EYE_BLINK];
         self.mainView.needsDisplay = YES;
     }
     
@@ -136,7 +144,7 @@
 - (void)unblink {
     if (currentlyBlinking == YES) {
         currentlyBlinking = NO;
-        [[self.mainView render] drawWith:lastEyeState];
+        [[self.mainView render] drawWithEye:lastEyeState];
         self.mainView.needsDisplay = YES;
     }
     
@@ -271,7 +279,7 @@
     if (eyeState != lastEyeState) {
         lastEyeState = eyeState;
         if (currentlyBlinking == NO) {
-            [[self.mainView render] drawWith:lastEyeState];
+            [[self.mainView render] drawWithEye:lastEyeState];
             self.mainView.needsDisplay = YES;
         }
     }
