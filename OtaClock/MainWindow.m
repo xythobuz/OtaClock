@@ -10,12 +10,15 @@
 #import "MainWindow.h"
 
 #define RESIZE_START 1
-#define RESIZE_END 5
+#define RESIZE_END 10
 #define RESIZE_STEP 1
 
 #define CONFIG_START_SCALE @"window_scale"
 #define CONFIG_KEEP_POSITION @"keep_position"
 #define CONFIG_KEEP_ON_TOP @"keep_on_top"
+#define CONFIG_MILITARY_TIME @"military_time"
+#define CONFIG_SHOW_DATE @"show_date"
+#define CONFIG_ALARM_TIME @"alarm_time"
 
 #define MOUSE_CENTER_X 67
 #define MOUSE_CENTER_Y 47
@@ -34,18 +37,26 @@
 @property (assign) NSSize defaultSize;
 @property (assign) NSInteger startScale;
 @property (assign) NSInteger lastEyeState;
-@property (assign) BOOL currentlyBlinking;
+@property (assign) BOOL currentlyBlinking, showDate;
 
 @property (weak) IBOutlet MainView *mainView;
+@property (weak) IBOutlet NSDatePicker *alarmDatePicker;
 
 @property (weak) IBOutlet NSMenuItem *lockPositionItem;
 @property (weak) IBOutlet NSMenuItem *keepOnTopItem;
+@property (weak) IBOutlet NSMenuItem *setAlarmItem;
+@property (weak) IBOutlet NSMenuItem *showDateItem;
 
 @property (weak) IBOutlet NSMenuItem *changeSize1;
 @property (weak) IBOutlet NSMenuItem *changeSize2;
 @property (weak) IBOutlet NSMenuItem *changeSize3;
 @property (weak) IBOutlet NSMenuItem *changeSize4;
 @property (weak) IBOutlet NSMenuItem *changeSize5;
+@property (weak) IBOutlet NSMenuItem *changeSize6;
+@property (weak) IBOutlet NSMenuItem *changeSize7;
+@property (weak) IBOutlet NSMenuItem *changeSize8;
+@property (weak) IBOutlet NSMenuItem *changeSize9;
+@property (weak) IBOutlet NSMenuItem *changeSize10;
 
 @end
 
@@ -57,7 +68,7 @@
 @synthesize defaultSize;
 @synthesize startScale;
 @synthesize lastEyeState;
-@synthesize currentlyBlinking;
+@synthesize currentlyBlinking, showDate;
 
 - (id)initWithContentRect:(NSRect)contentRect
                styleMask:(NSUInteger)aStyle
@@ -116,6 +127,11 @@
     if (startScale == 3) [self.changeSize3 setState:NSOnState];
     if (startScale == 4) [self.changeSize4 setState:NSOnState];
     if (startScale == 5) [self.changeSize5 setState:NSOnState];
+    if (startScale == 6) [self.changeSize6 setState:NSOnState];
+    if (startScale == 7) [self.changeSize7 setState:NSOnState];
+    if (startScale == 8) [self.changeSize8 setState:NSOnState];
+    if (startScale == 9) [self.changeSize9 setState:NSOnState];
+    if (startScale == 10) [self.changeSize10 setState:NSOnState];
     
     [[self.mainView render] drawWithEye:lastEyeState]; // Initialize render image
     [self unblink]; // Schedule next blinking
@@ -123,6 +139,30 @@
     // Start time keeping
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateTime:) userInfo:nil repeats:YES];
     [self updateTime:nil];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    // load alarm date
+    if ([defaults objectForKey:CONFIG_ALARM_TIME] == nil) {
+        self.alarmDatePicker.dateValue = [NSDate date];
+    } else {
+        self.alarmDatePicker.dateValue = [defaults objectForKey:CONFIG_ALARM_TIME];
+    }
+    self.setAlarmItem.view = self.alarmDatePicker;
+    
+    // load show date state
+    if ([defaults objectForKey:CONFIG_SHOW_DATE] == nil) {
+        showDate = YES;
+    } else {
+        showDate = [defaults boolForKey:CONFIG_SHOW_DATE];
+    }
+    if (showDate == YES) {
+        self.showDateItem.state = NSOnState;
+    } else {
+        self.showDateItem.state = NSOffState;
+    }
+    
+    [[self.mainView render] drawDate:showDate];
     
     [self setFrame:frame display:YES];
 }
@@ -152,6 +192,29 @@
     [self performSelector:@selector(blink) withObject:nil afterDelay:(((float)rand() / RAND_MAX) * MAX_BLINK_DELAY)];
 }
 
+- (IBAction)alarmDateSelected:(id)sender {
+    // TODO do something with this alarm time...
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.alarmDatePicker.dateValue forKey:CONFIG_ALARM_TIME];
+    [defaults synchronize];
+}
+
+- (IBAction)showDate:(id)sender {
+    if (showDate == YES) {
+        showDate = NO;
+        self.showDateItem.state = NSOffState;
+    } else {
+        showDate = YES;
+        self.showDateItem.state = NSOnState;
+    }
+    [[self.mainView render] drawDate:showDate];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:showDate forKey:CONFIG_SHOW_DATE];
+    [defaults synchronize];
+}
+
 - (IBAction)changeSize:(NSMenuItem *)sender {
     NSRect frame = [self frame];
     
@@ -160,10 +223,15 @@
     [self.changeSize3 setState:NSOffState];
     [self.changeSize4 setState:NSOffState];
     [self.changeSize5 setState:NSOffState];
+    [self.changeSize6 setState:NSOffState];
+    [self.changeSize7 setState:NSOffState];
+    [self.changeSize8 setState:NSOffState];
+    [self.changeSize9 setState:NSOffState];
+    [self.changeSize10 setState:NSOffState];
     
     BOOL found = NO;
     for (int i = RESIZE_START; i <= RESIZE_END; i += RESIZE_STEP) {
-        NSString *title = [NSString stringWithFormat:@"%dx", i];
+        NSString *title = [NSString stringWithFormat:@"x%d", i];
         if ([[sender title] isEqualToString:title]) {
             [sender setState:NSOnState];
             NSSize newSize = defaultSize;

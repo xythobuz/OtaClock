@@ -83,83 +83,212 @@
                 </connections>
             </view>
             <connections>
+                <outlet property="alarmDatePicker" destination="A2I-e6-ur5" id="wh1-Z1-r9q"/>
                 <outlet property="changeSize1" destination="Acr-Ff-Lm2" id="qUp-XP-Ffo"/>
+                <outlet property="changeSize10" destination="eMz-8d-XLg" id="Ppm-Gu-5xS"/>
                 <outlet property="changeSize2" destination="sRn-WM-cKW" id="luN-Dk-xw4"/>
                 <outlet property="changeSize3" destination="Ynv-fd-dtQ" id="QeL-wH-eAC"/>
                 <outlet property="changeSize4" destination="rKj-Pe-N3u" id="tmN-AZ-egV"/>
                 <outlet property="changeSize5" destination="Qji-aB-KLD" id="a79-d3-RIN"/>
-                <outlet property="keepOnTopItem" destination="bk2-WG-9eq" id="vBf-vA-eXc"/>
-                <outlet property="lockPositionItem" destination="YfQ-b7-bXC" id="CYs-rk-6GP"/>
+                <outlet property="changeSize6" destination="RvN-WU-vpJ" id="hlG-6e-JmA"/>
+                <outlet property="changeSize7" destination="7sp-5h-kYL" id="ore-Fs-2W9"/>
+                <outlet property="changeSize8" destination="WnO-2m-uXI" id="jKZ-CW-zyj"/>
+                <outlet property="changeSize9" destination="NhP-qX-OsO" id="yL9-ON-q1Y"/>
+                <outlet property="keepOnTopItem" destination="LVI-ch-nme" id="lL1-Yi-zMN"/>
+                <outlet property="lockPositionItem" destination="ShL-8K-SbX" id="ppY-l8-Bda"/>
                 <outlet property="mainView" destination="EiT-Mj-1SZ" id="sQZ-BE-YrX"/>
+                <outlet property="setAlarmItem" destination="IRB-i7-bez" id="V2f-2Y-Eyh"/>
+                <outlet property="showDateItem" destination="0Cy-4I-9bF" id="T7y-ik-8nT"/>
             </connections>
-            <point key="canvasLocation" x="129.5" y="81"/>
+            <point key="canvasLocation" x="-147.5" y="74"/>
         </window>
         <menu id="v1Z-w4-vhP">
             <items>
-                <menuItem title="Change Size" id="msY-7t-C9j">
+                <menuItem title="View" id="aaw-ha-cZ9">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Change Size" id="b3j-Lp-Mui">
+                    <menu key="submenu" title="View" id="xOl-as-LSf">
                         <items>
-                            <menuItem title="1x" id="Acr-Ff-Lm2">
+                            <menuItem title="Military Time" id="Cgd-DK-xB0">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Alarm Mode" id="S8W-ak-RY9">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Show Date" id="0Cy-4I-9bF">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showDate:" target="QvC-M9-y7g" id="BSR-q0-DhH"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Always on Top" id="LVI-ch-nme">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="keepOnTop:" target="QvC-M9-y7g" id="vsX-bh-Qvw"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Fix Location" id="ShL-8K-SbX">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="lockPosition:" target="QvC-M9-y7g" id="FPS-80-FZS"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Drop Shadow" id="4eS-hA-ECa">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Size" id="msY-7t-C9j">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Size" id="b3j-Lp-Mui">
+                        <items>
+                            <menuItem title="x1" id="Acr-Ff-Lm2">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="changeSize:" target="QvC-M9-y7g" id="LdY-jb-6Tw"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="2x" id="sRn-WM-cKW">
+                            <menuItem title="x2" id="sRn-WM-cKW">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="changeSize:" target="QvC-M9-y7g" id="Nvd-gD-ixJ"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="3x" id="Ynv-fd-dtQ">
+                            <menuItem title="x3" id="Ynv-fd-dtQ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="changeSize:" target="QvC-M9-y7g" id="Nrc-zM-1sT"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="4x" id="rKj-Pe-N3u">
+                            <menuItem title="x4" id="rKj-Pe-N3u">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="changeSize:" target="QvC-M9-y7g" id="QoN-cm-k5P"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="5x" id="Qji-aB-KLD">
+                            <menuItem title="x5" id="Qji-aB-KLD">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="changeSize:" target="QvC-M9-y7g" id="Y9P-XF-cjZ"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="x6" id="RvN-WU-vpJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="ZKN-ZR-4XG"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="x7" id="7sp-5h-kYL">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="0n8-RW-SYP"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="x8" id="WnO-2m-uXI">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="Qpk-3l-vRh"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="x9" id="NhP-qX-OsO">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="yBZ-92-wf1"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="x10" id="eMz-8d-XLg">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changeSize:" target="QvC-M9-y7g" id="Rkk-RZ-7ki"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Alarm" id="nsi-HU-yLS">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Alarm" id="9Ra-Fc-lVu">
+                        <items>
+                            <menuItem title="&quot;LAUGH&quot;" id="62g-Ai-pTm">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="&quot;OK&quot;" id="Nn9-Q1-6Xe">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="cE8-kx-VzJ"/>
+                            <menuItem title="WAVE File" id="gKE-dz-bZ5">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="WAVE File (LOOP)" id="4Hq-h0-hMx">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="AKe-eD-qSj"/>
+                            <menuItem title="Alarm Buzzer Duration" id="sgQ-pO-ctj">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Alarm Buzzer Duration" id="d9P-wR-AG3">
+                                    <items>
+                                        <menuItem title="5 sec" id="vDE-9f-4z8">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="10 sec" id="lT0-pq-3Z3">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="30 sec" id="qaN-tN-4mB">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="60 sec" id="Wqq-BO-KhH">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="reI-n6-U2e"/>
-                <menuItem title="Lock position" id="YfQ-b7-bXC">
+                <menuItem title="Set Alarm" id="Xnn-ra-5vW">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="lockPosition:" target="QvC-M9-y7g" id="l9S-pc-JSb"/>
-                    </connections>
+                    <menu key="submenu" title="Set Alarm" id="wYe-EL-D4t">
+                        <items>
+                            <menuItem title="Item" id="IRB-i7-bez">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </menuItem>
-                <menuItem title="Keep on top" id="bk2-WG-9eq">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="keepOnTop:" target="QvC-M9-y7g" id="b6a-ad-4oz"/>
-                    </connections>
-                </menuItem>
-                <menuItem isSeparatorItem="YES" id="aVS-e6-OtM"/>
+                <menuItem isSeparatorItem="YES" id="MRz-da-sGL"/>
                 <menuItem title="About OtaClock" id="Tlq-91-8IJ">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="orderFrontStandardAboutPanel:" target="-1" id="VRw-6e-aO6"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="aST-Bj-tTS"/>
                 <menuItem title="Quit OtaClock" keyEquivalent="q" id="BNj-pS-CpH">
                     <connections>
                         <action selector="terminate:" target="-1" id="19f-sZ-hYK"/>
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="376" y="304.5"/>
+            <point key="canvasLocation" x="292.5" y="80.5"/>
         </menu>
+        <datePicker verticalHuggingPriority="750" id="A2I-e6-ur5">
+            <rect key="frame" x="0.0" y="0.0" width="278" height="148"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="aSU-YP-y5q">
+                <font key="font" metaFont="system"/>
+                <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
+                    <!--1982-02-12 16:00:00 +0000-->
+                    <timeZone key="timeZone" name="US/Pacific"/>
+                </calendarDate>
+                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                <datePickerElements key="datePickerElements" year="YES" month="YES" day="YES" hour="YES" minute="YES" second="YES"/>
+            </datePickerCell>
+            <connections>
+                <action selector="alarmDateSelected:" target="QvC-M9-y7g" id="ghc-DM-FuW"/>
+            </connections>
+            <point key="canvasLocation" x="121.5" y="377"/>
+        </datePicker>
     </objects>
 </document>

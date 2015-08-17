@@ -60,9 +60,12 @@
 #define DOTS_ALARM_X_OFFSET 38
 #define DOTS_ALARM_Y_OFFSET 57
 
+#define BLANK_OFFSET_X 13
+#define BLANK_OFFSET_Y 71
+
 @interface Render ()
 
-@property (assign) CGImageRef otaconGraphic, bubbleGraphic, alarmGraphic;
+@property (assign) CGImageRef otaconGraphic, bubbleGraphic, alarmGraphic, blankGraphic;
 @property (assign) CGImageRef eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
 @property (assign) CGImageRef fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @property (assign) CGImageRef fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
@@ -72,7 +75,7 @@
 @property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @property (assign) NSInteger alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @property (assign) NSInteger timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@property (assign) BOOL alarmSign, alarmDots, timeDots;
+@property (assign) BOOL alarmSign, alarmDots, timeDots, drawDate;
 
 @property (assign) NSSize fullSize;
 @property (assign) CGContextRef drawContext;
@@ -83,7 +86,7 @@
 
 @implementation Render
 
-@synthesize otaconGraphic, bubbleGraphic, alarmGraphic;
+@synthesize otaconGraphic, bubbleGraphic, alarmGraphic, blankGraphic;
 @synthesize eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
 @synthesize fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @synthesize fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
@@ -93,7 +96,7 @@
 @synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @synthesize alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @synthesize timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@synthesize alarmSign, alarmDots, timeDots;
+@synthesize alarmSign, alarmDots, timeDots, drawDate;
 
 @synthesize fullSize;
 @synthesize drawContext;
@@ -175,6 +178,7 @@
     NSImage *alarmImage = [NSImage imageNamed:@"alarm"];
     NSImage *dotsSmallImage = [NSImage imageNamed:@"dots_small"];
     NSImage *dotsLargeImage = [NSImage imageNamed:@"dots_large"];
+    NSImage *blankImage = [NSImage imageNamed:@"blank"];
     
     NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithAttributes:nil];
     
@@ -183,6 +187,7 @@
     alarmGraphic = [alarmImage CGImageForProposedRect:nil context:context hints:nil];
     dotSmallGraphic = [dotsSmallImage CGImageForProposedRect:nil context:context hints:nil];
     dotLargeGraphic = [dotsLargeImage CGImageForProposedRect:nil context:context hints:nil];
+    blankGraphic = [blankImage CGImageForProposedRect:nil context:context hints:nil];
     eye0 = [eye0Image CGImageForProposedRect:nil context:context hints:nil];
     eye1 = [eye1Image CGImageForProposedRect:nil context:context hints:nil];
     eye2 = [eye2Image CGImageForProposedRect:nil context:context hints:nil];
@@ -315,6 +320,10 @@
     } \
 } while (0);
 
+- (void)drawDate:(BOOL)draw {
+    drawDate = draw;
+}
+
 - (void)drawWithDate:(NSDate *)date {
     NSCalendarUnit comps = NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
     NSDateComponents *components = [[NSCalendar currentCalendar] components:comps fromDate:date];
@@ -344,34 +353,43 @@
     size.origin.y = BUBBLE_Y_OFFSET;
     CGContextDrawImage(drawContext, size, bubbleGraphic);
 
-    // Draw Date
-    size.size.width = FONT_SMALL_WIDTH;
-    size.size.height = FONT_SMALL_HEIGHT;
-    size.origin.y = FONT_SMALL_DATE_Y_OFFSET;
-    if (dateDigit0 == 1) {
-        size.origin.x = FONT_SMALL_DATE_X0_OFFSET;
-        CGContextDrawImage(drawContext, size, fontSmall1);
-    }
-    if ((dateDigit1 >= 0) && (dateDigit1 <= 9)) {
-        size.origin.x = FONT_SMALL_DATE_X1_OFFSET;
-        CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit1]);
-    }
-    if ((dateDigit2 >= 0) && (dateDigit2 <= 9)) {
-        size.origin.x = FONT_SMALL_DATE_X2_OFFSET;
-        CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit2]);
-    }
-    if ((dateDigit3 >= 0) && (dateDigit3 <= 9)) {
-        size.origin.x = FONT_SMALL_DATE_X3_OFFSET;
-        CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit3]);
-    }
+    if (drawDate == YES) {
+        // Draw Date
+        size.size.width = FONT_SMALL_WIDTH;
+        size.size.height = FONT_SMALL_HEIGHT;
+        size.origin.y = FONT_SMALL_DATE_Y_OFFSET;
+        if (dateDigit0 == 1) {
+            size.origin.x = FONT_SMALL_DATE_X0_OFFSET;
+            CGContextDrawImage(drawContext, size, fontSmall1);
+        }
+        if ((dateDigit1 >= 0) && (dateDigit1 <= 9)) {
+            size.origin.x = FONT_SMALL_DATE_X1_OFFSET;
+            CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit1]);
+        }
+        if ((dateDigit2 >= 0) && (dateDigit2 <= 9)) {
+            size.origin.x = FONT_SMALL_DATE_X2_OFFSET;
+            CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit2]);
+        }
+        if ((dateDigit3 >= 0) && (dateDigit3 <= 9)) {
+            size.origin.x = FONT_SMALL_DATE_X3_OFFSET;
+            CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit3]);
+        }
 
-    // Draw Day of Week
-    CGImageRef day = [self dayHelper:dayOfWeek];
-    size.size.width = FONT_DAYS_WIDTH;
-    size.size.height = FONT_DAYS_HEIGHT;
-    size.origin.x = FONT_DAYS_X_OFFSET;
-    size.origin.y = FONT_DAYS_Y_OFFSET;
-    CGContextDrawImage(drawContext, size, day);
+        // Draw Day of Week
+        CGImageRef day = [self dayHelper:dayOfWeek];
+        size.size.width = FONT_DAYS_WIDTH;
+        size.size.height = FONT_DAYS_HEIGHT;
+        size.origin.x = FONT_DAYS_X_OFFSET;
+        size.origin.y = FONT_DAYS_Y_OFFSET;
+        CGContextDrawImage(drawContext, size, day);
+    } else {
+        // Block unneeded date elements
+        size.size.width = CGImageGetWidth(blankGraphic);
+        size.size.height = CGImageGetHeight(blankGraphic);
+        size.origin.x = BLANK_OFFSET_X;
+        size.origin.y = BLANK_OFFSET_Y;
+        CGContextDrawImage(drawContext, size, blankGraphic);
+    }
     
     // Draw Time
     size.size.width = FONT_LARGE_WIDTH;

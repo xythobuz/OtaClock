@@ -15,6 +15,7 @@
 - (id)initWithParent:(MainView *)par;
 - (NSSize)baseSize;
 
+- (void)drawDate:(BOOL)draw;
 - (void)drawWithDate:(NSDate *)date;
 - (void)drawWithEye:(NSInteger)eyeIndex;
 - (void)drawInto:(NSView *)view;
