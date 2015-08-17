@@ -26,9 +26,18 @@
 #define FONT_LARGE_HEIGHT 7
 #define FONT_LARGE_PADDING 1
 
+#define FONT_LARGE_Y_OFFSET 63
+#define FONT_LARGE_X0_OFFSET 5
+#define FONT_LARGE_X1_OFFSET 12
+#define FONT_LARGE_X2_OFFSET 21
+#define FONT_LARGE_X3_OFFSET 28
+#define FONT_LARGE_X4_OFFSET 37
+#define FONT_LARGE_X5_OFFSET 44
+
 #define FONT_SMALL_WIDTH 4
 #define FONT_SMALL_HEIGHT 5
 #define FONT_SMALL_PADDING 1
+
 #define FONT_SMALL_DATE_Y_OFFSET 71
 #define FONT_SMALL_DATE_X0_OFFSET 3
 #define FONT_SMALL_DATE_X1_OFFSET 8
@@ -41,9 +50,12 @@
 #define FONT_SMALL_ALARM_X2_OFFSET 41
 #define FONT_SMALL_ALARM_X3_OFFSET 46
 
+#define ALARM_X_OFFSET 5
+#define ALARM_Y_OFFSET 57
+
 @interface Render ()
 
-@property (assign) CGImageRef otaconGraphic, bubbleGraphic;
+@property (assign) CGImageRef otaconGraphic, bubbleGraphic, alarmGraphic;
 @property (assign) CGImageRef eye0, eye1, eye2, eye3, eye4;
 @property (assign) CGImageRef fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @property (assign) CGImageRef fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
@@ -52,6 +64,8 @@
 @property (assign) NSInteger eyeToDraw, dayOfWeek;
 @property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @property (assign) NSInteger alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
+@property (assign) NSInteger timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
+@property (assign) BOOL alarmSign;
 
 @property (assign) NSSize fullSize;
 @property (assign) CGContextRef drawContext;
@@ -62,7 +76,7 @@
 
 @implementation Render
 
-@synthesize otaconGraphic, bubbleGraphic;
+@synthesize otaconGraphic, bubbleGraphic, alarmGraphic;
 @synthesize eye0, eye1, eye2, eye3, eye4;
 @synthesize fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @synthesize fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
@@ -71,6 +85,8 @@
 @synthesize eyeToDraw, dayOfWeek;
 @synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @synthesize alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
+@synthesize timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
+@synthesize alarmSign;
 
 @synthesize fullSize;
 @synthesize drawContext;
@@ -149,11 +165,13 @@
     NSImage *fontDaysImage = [NSImage imageNamed:@"font_days"];
     NSImage *fontSmallImage = [NSImage imageNamed:@"font_small"];
     NSImage *fontLargeImage = [NSImage imageNamed:@"font_large"];
+    NSImage *alarmImage = [NSImage imageNamed:@"alarm"];
     
     NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithAttributes:nil];
     
     otaconGraphic = [otaconImage CGImageForProposedRect:nil context:context hints:nil];
     bubbleGraphic = [bubbleImage CGImageForProposedRect:nil context:context hints:nil];
+    alarmGraphic = [alarmImage CGImageForProposedRect:nil context:context hints:nil];
     eye0 = [eye0Image CGImageForProposedRect:nil context:context hints:nil];
     eye1 = [eye1Image CGImageForProposedRect:nil context:context hints:nil];
     eye2 = [eye2Image CGImageForProposedRect:nil context:context hints:nil];
@@ -246,6 +264,13 @@
     alarmDigit1 = 8;
     alarmDigit2 = 8;
     alarmDigit3 = 8;
+    timeDigit0 = 8;
+    timeDigit1 = 8;
+    timeDigit2 = 8;
+    timeDigit3 = 8;
+    timeDigit4 = 8;
+    timeDigit5 = 8;
+    alarmSign = YES;
     
     return self;
 }
@@ -329,7 +354,42 @@
     CGContextDrawImage(drawContext, size, day);
     
     // Draw Time
+    size.size.width = FONT_LARGE_WIDTH;
+    size.size.height = FONT_LARGE_HEIGHT;
+    size.origin.y = FONT_LARGE_Y_OFFSET;
+    if ((timeDigit0 >= 0) && (timeDigit0 <= 9)) {
+        size.origin.x = FONT_LARGE_X0_OFFSET;
+        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit0]);
+    }
+    if ((timeDigit1 >= 0) && (timeDigit1 <= 9)) {
+        size.origin.x = FONT_LARGE_X1_OFFSET;
+        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit1]);
+    }
+    if ((timeDigit2 >= 0) && (timeDigit2 <= 9)) {
+        size.origin.x = FONT_LARGE_X2_OFFSET;
+        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit2]);
+    }
+    if ((timeDigit3 >= 0) && (timeDigit3 <= 9)) {
+        size.origin.x = FONT_LARGE_X3_OFFSET;
+        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit3]);
+    }
+    if ((timeDigit4 >= 0) && (timeDigit4 <= 9)) {
+        size.origin.x = FONT_LARGE_X4_OFFSET;
+        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit4]);
+    }
+    if ((timeDigit5 >= 0) && (timeDigit5 <= 9)) {
+        size.origin.x = FONT_LARGE_X5_OFFSET;
+        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit5]);
+    }
     
+    // Draw Alarm Graphic
+    if (alarmSign == YES) {
+        size.size.width = CGImageGetWidth(alarmGraphic);
+        size.size.height = CGImageGetHeight(alarmGraphic);
+        size.origin.x = ALARM_X_OFFSET;
+        size.origin.y = ALARM_Y_OFFSET;
+        CGContextDrawImage(drawContext, size, alarmGraphic);
+    }
     
     // Draw Alarm Time
     size.size.width = FONT_SMALL_WIDTH;

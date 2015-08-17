@@ -128,8 +128,8 @@
 }
 
 - (void)updateTime:(id)sender {
-    //[[self.mainView render] drawWithDate:[NSDate date]];
-    //self.mainView.needsDisplay = YES;
+    [[self.mainView render] drawWithDate:[NSDate date]];
+    self.mainView.needsDisplay = YES;
 }
 
 - (void)blink {
