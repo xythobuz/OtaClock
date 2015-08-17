@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 xythobuz. All rights reserved.
 //
 
+#import "MainView.h"
 #import "MainWindow.h"
 
 #define RESIZE_START 1
@@ -16,10 +17,22 @@
 #define CONFIG_KEEP_POSITION @"keep_position"
 #define CONFIG_KEEP_ON_TOP @"keep_on_top"
 
+#define MOUSE_CENTER_X 337
+#define MOUSE_CENTER_Y 237
+
+#define EYE_BLINK 0
+#define EYE_TOP_RIGHT 4
+#define EYE_TOP_LEFT 2
+#define EYE_BOTTOM_RIGHT 3
+#define EYE_BOTTOM_LEFT 1
+
 @interface MainWindow ()
 
 @property (assign) NSSize defaultSize;
 @property (assign) NSInteger startScale;
+@property (assign) NSInteger lastEyeState;
+
+@property (weak) IBOutlet MainView *mainView;
 
 @property (weak) IBOutlet NSMenuItem *lockPositionItem;
 @property (weak) IBOutlet NSMenuItem *keepOnTopItem;
@@ -39,8 +52,7 @@
 
 @synthesize defaultSize;
 @synthesize startScale;
-
-// TODO window position should be remembered!
+@synthesize lastEyeState;
 
 - (id)initWithContentRect:(NSRect)contentRect
                styleMask:(NSUInteger)aStyle
@@ -50,6 +62,7 @@
     if (self != nil) {
         [self setAlphaValue:1.0];
         [self setOpaque:NO];
+        lastEyeState = EYE_TOP_LEFT;
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
@@ -74,6 +87,10 @@
             startScale = [defaults integerForKey:CONFIG_START_SCALE];
         }
     }
+    
+    [self setAcceptsMouseMovedEvents:YES];
+    [NSEvent addGlobalMonitorForEventsMatchingMask:NSMouseMovedMask handler:^(NSEvent *mouseMovedEvent) { [self mouseMoved:mouseMovedEvent]; }];
+    
     return self;
 }
 
@@ -93,6 +110,8 @@
     if (startScale == 3) [self.changeSize3 setState:NSOnState];
     if (startScale == 4) [self.changeSize4 setState:NSOnState];
     if (startScale == 5) [self.changeSize5 setState:NSOnState];
+    
+    [[self.mainView render] drawWith:lastEyeState]; // Initialize render image
     
     [self setFrame:frame display:YES];
 }
@@ -181,7 +200,7 @@
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
-    self.dragStart = [theEvent locationInWindow];
+    dragStart = [theEvent locationInWindow];
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
@@ -199,6 +218,30 @@
         }
     
         [self setFrameOrigin:newOrigin];
+    }
+}
+
+- (void)mouseMoved:(NSEvent *)theEvent {
+    NSPoint mousePoint = [NSEvent mouseLocation];
+    mousePoint.x -= [self frame].origin.x;
+    mousePoint.y -= [self frame].origin.y;
+    
+    BOOL top = (mousePoint.y > MOUSE_CENTER_Y);
+    BOOL right = (mousePoint.x > MOUSE_CENTER_X);
+    
+    NSInteger eyeState = EYE_BOTTOM_LEFT;
+    if (top && right) {
+        eyeState = EYE_TOP_RIGHT;
+    } else if (top && (!right)) {
+        eyeState = EYE_TOP_LEFT;
+    } else if ((!top) && right) {
+        eyeState = EYE_BOTTOM_RIGHT;
+    }
+    
+    if (eyeState != lastEyeState) {
+        lastEyeState = eyeState;
+        [[self.mainView render] drawWith:lastEyeState];
+        self.mainView.needsDisplay = YES;
     }
 }
 

@@ -90,6 +90,7 @@
                 <outlet property="changeSize5" destination="Qji-aB-KLD" id="a79-d3-RIN"/>
                 <outlet property="keepOnTopItem" destination="bk2-WG-9eq" id="vBf-vA-eXc"/>
                 <outlet property="lockPositionItem" destination="YfQ-b7-bXC" id="CYs-rk-6GP"/>
+                <outlet property="mainView" destination="EiT-Mj-1SZ" id="sQZ-BE-YrX"/>
             </connections>
             <point key="canvasLocation" x="129.5" y="81"/>
         </window>

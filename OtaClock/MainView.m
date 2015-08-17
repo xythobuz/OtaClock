@@ -7,12 +7,9 @@
 //
 
 #import "MainWindow.h"
-#import "Render.h"
 #import "MainView.h"
 
 @interface MainView ()
-
-@property (strong) Render *render;
 
 @end
 
@@ -29,8 +26,6 @@
     // Clear background
     [[NSColor clearColor] set];
     NSRectFill([self frame]);
-    
-    [render drawWith:0]; // Should be done somewhere else!
     [render drawInto:self]; // Draw composite image
 }
 

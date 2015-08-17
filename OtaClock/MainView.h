@@ -8,6 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "Render.h"
+
 @interface MainView : NSView
+
+@property (strong) Render *render;
 
 @end
