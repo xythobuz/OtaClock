@@ -12,7 +12,10 @@
 #define FULL_IMAGE_WIDTH 86
 #define FULL_IMAGE_HEIGHT 80
 #define BUBBLE_Y_OFFSET 45
-#define OTACON_X_OFFSET 1
+#define OTACON_0_X_OFFSET 1
+#define OTACON_1_X_OFFSET 0
+#define OTACON_2_X_OFFSET -6
+#define OTACON_3_X_OFFSET -6
 #define EYE_X_OFFSET 60
 #define EYE_Y_OFFSET 45
 
@@ -66,12 +69,13 @@
 @interface Render ()
 
 @property (assign) CGImageRef otaconGraphic, bubbleGraphic, alarmGraphic, blankGraphic;
+@property (assign) CGImageRef otacon1Graphic, otacon2Graphic, otacon3Graphic;
 @property (assign) CGImageRef eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
 @property (assign) CGImageRef fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @property (assign) CGImageRef fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
 @property (assign) CGImageRef fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
 
-@property (assign) NSInteger eyeToDraw, dayOfWeek;
+@property (assign) NSInteger eyeToDraw, dayOfWeek, animState;
 @property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @property (assign) NSInteger alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @property (assign) NSInteger timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
@@ -87,12 +91,13 @@
 @implementation Render
 
 @synthesize otaconGraphic, bubbleGraphic, alarmGraphic, blankGraphic;
+@synthesize otacon1Graphic, otacon2Graphic, otacon3Graphic;
 @synthesize eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
 @synthesize fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @synthesize fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
 @synthesize fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
 
-@synthesize eyeToDraw, dayOfWeek;
+@synthesize eyeToDraw, dayOfWeek, animState;
 @synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @synthesize alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @synthesize timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
@@ -179,6 +184,9 @@
     NSImage *dotsSmallImage = [NSImage imageNamed:@"dots_small"];
     NSImage *dotsLargeImage = [NSImage imageNamed:@"dots_large"];
     NSImage *blankImage = [NSImage imageNamed:@"blank"];
+    NSImage *otacon1Image = [NSImage imageNamed:@"otacon_1"];
+    NSImage *otacon2Image = [NSImage imageNamed:@"otacon_2"];
+    NSImage *otacon3Image = [NSImage imageNamed:@"otacon_3"];
     
     NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithAttributes:nil];
     
@@ -193,6 +201,9 @@
     eye2 = [eye2Image CGImageForProposedRect:nil context:context hints:nil];
     eye3 = [eye3Image CGImageForProposedRect:nil context:context hints:nil];
     eye4 = [eye4Image CGImageForProposedRect:nil context:context hints:nil];
+    otacon1Graphic = [otacon1Image CGImageForProposedRect:nil context:context hints:nil];
+    otacon2Graphic = [otacon2Image CGImageForProposedRect:nil context:context hints:nil];
+    otacon3Graphic = [otacon3Image CGImageForProposedRect:nil context:context hints:nil];
     
     CGImageRef fontDays = [fontDaysImage CGImageForProposedRect:nil context:context hints:nil];
     NSRect rectDay;
@@ -270,6 +281,7 @@
     
     drawContext = CGBitmapContextCreate(NULL, fullSize.width, fullSize.height, 8, 0, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault);
     
+    animState = 0;
     eyeToDraw = 0;
     dayOfWeek = 0;
     dateDigit0 = 1;
@@ -319,6 +331,39 @@
         one = num; \
     } \
 } while (0);
+
+- (void)blinkDots {
+    timeDots = !timeDots;
+    if ((alarmDigit0 != -1) || (alarmDigit1 != -1) || (alarmDigit2 != -1) || (alarmDigit3 != -1)) {
+        alarmDots = timeDots;
+    }
+}
+
+- (void)drawAnimation:(NSInteger)state {
+    if (animState != state) {
+        [[self.parent window] invalidateShadow];
+    }
+    animState = state;
+}
+
+- (void)drawAlarmDate:(NSDate *)alarm {
+    if (alarm == nil) {
+        alarmDigit0 = -1;
+        alarmDigit1 = -1;
+        alarmDigit2 = -1;
+        alarmDigit3 = -1;
+        alarmSign = NO;
+        alarmDots = NO;
+        return;
+    }
+    
+    alarmSign = YES;
+    alarmDots = YES;
+    
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:alarm];
+    CONVERT_DECIMAL([components hour], alarmDigit0, alarmDigit1);
+    CONVERT_DECIMAL([components minute], alarmDigit2, alarmDigit3);
+}
 
 - (void)drawDate:(BOOL)draw {
     drawDate = draw;
@@ -470,19 +515,37 @@
         CGContextDrawImage(drawContext, size, [self smallHelper:alarmDigit3]);
     }
     
-    // Draw Otacon
-    size.size.width = CGImageGetWidth(otaconGraphic);
-    size.size.height = CGImageGetHeight(otaconGraphic);
     size.origin = NSZeroPoint;
-    size.origin.x = CGImageGetWidth(bubbleGraphic) + OTACON_X_OFFSET;
-    CGContextDrawImage(drawContext, size, otaconGraphic);
+    if (animState == 0) {
+        // Draw Otacon
+        size.size.width = CGImageGetWidth(otaconGraphic);
+        size.size.height = CGImageGetHeight(otaconGraphic);
+        size.origin.x = CGImageGetWidth(bubbleGraphic) + OTACON_0_X_OFFSET;
+        CGContextDrawImage(drawContext, size, otaconGraphic);
     
-    // Draw eyes
-    size.size.width = CGImageGetWidth([self eyeHelper:eyeToDraw]);
-    size.size.height = CGImageGetHeight([self eyeHelper:eyeToDraw]);
-    size.origin.x = EYE_X_OFFSET;
-    size.origin.y = EYE_Y_OFFSET;
-    CGContextDrawImage(drawContext, size, [self eyeHelper:eyeToDraw]);
+        // Draw eyes
+        size.size.width = CGImageGetWidth([self eyeHelper:eyeToDraw]);
+        size.size.height = CGImageGetHeight([self eyeHelper:eyeToDraw]);
+        size.origin.x = EYE_X_OFFSET;
+        size.origin.y = EYE_Y_OFFSET;
+        CGContextDrawImage(drawContext, size, [self eyeHelper:eyeToDraw]);
+    } else if (animState == 1) {
+        size.size.width = CGImageGetWidth(otacon1Graphic);
+        size.size.height = CGImageGetHeight(otacon1Graphic);
+        size.origin.x = CGImageGetWidth(bubbleGraphic) + OTACON_1_X_OFFSET;
+        CGContextDrawImage(drawContext, size, otacon1Graphic);
+    } else if (animState == 2) {
+        size.size.width = CGImageGetWidth(otacon2Graphic);
+        size.size.height = CGImageGetHeight(otacon2Graphic);
+        size.origin.x = CGImageGetWidth(bubbleGraphic) + OTACON_2_X_OFFSET;
+        CGContextDrawImage(drawContext, size, otacon2Graphic);
+    } else {
+        size.size.width = CGImageGetWidth(otacon3Graphic);
+        size.size.height = CGImageGetHeight(otacon3Graphic);
+        size.origin.x = CGImageGetWidth(bubbleGraphic) + OTACON_3_X_OFFSET;
+        CGContextDrawImage(drawContext, size, otacon3Graphic);
+        
+    }
     
     // Render resulting canvas into bitmap and scale this into our window
     CGImageRef drawnImage = CGBitmapContextCreateImage(drawContext);

@@ -31,6 +31,12 @@
 
 #define MAX_BLINK_DELAY 5.0
 #define UNBLINK_DELAY 0.1
+#define TIME_KEEPING_DELAY 0.25
+
+// The shadow is not properly recomputed if we don't do it multiple times
+#define ANIMATION_SHADOW_HACK 3
+#define ALARM_ANIMATION_DELAY (0.25 / ANIMATION_SHADOW_HACK)
+#define ALARM_ANIMATION_DELAY_END 3.0
 
 @interface MainWindow ()
 
@@ -137,7 +143,6 @@
     [self unblink]; // Schedule next blinking
     
     // Start time keeping
-    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateTime:) userInfo:nil repeats:YES];
     [self updateTime:nil];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -167,8 +172,45 @@
     [self setFrame:frame display:YES];
 }
 
+- (void)drawAnimation:(NSNumber *)anim {
+    if ([anim integerValue] > (3 * ANIMATION_SHADOW_HACK)) {
+        [[self.mainView render] drawAnimation:0]; // reset
+    } else {
+        [[self.mainView render] drawAnimation:([anim integerValue] / ANIMATION_SHADOW_HACK)];
+    }
+    
+    if ([anim integerValue] < (3 * ANIMATION_SHADOW_HACK)) {
+        [self performSelector:@selector(drawAnimation:) withObject:[NSNumber numberWithInteger:([anim integerValue] + 1)] afterDelay:ALARM_ANIMATION_DELAY];
+    } else if ([anim integerValue] < (4 * ANIMATION_SHADOW_HACK)) {
+        [self performSelector:@selector(drawAnimation:) withObject:[NSNumber numberWithInteger:([anim integerValue] + 1)] afterDelay:ALARM_ANIMATION_DELAY_END];
+    }
+    
+    [self invalidateShadow];
+    self.mainView.needsDisplay = YES;
+}
+
 - (void)updateTime:(id)sender {
-    [[self.mainView render] drawWithDate:[NSDate date]];
+    [self performSelector:@selector(updateTime:) withObject:nil afterDelay:TIME_KEEPING_DELAY];
+    
+    // Check if a second went by
+    NSDate *now = [NSDate date];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:now];
+    static NSInteger lastSec = -1;
+    if (lastSec == [components second]) {
+        return;
+    }
+    lastSec = [components second];
+    
+    [[self.mainView render] drawWithDate:now];
+    [[self.mainView render] blinkDots];
+    
+    NSTimeInterval in = [now timeIntervalSinceDate:self.alarmDatePicker.dateValue];
+    if ((in >= -0.5) && (in <= 0.5)) {
+        // We have reached the alarm time
+        NSLog(@"Alarm time reached!");
+        [self drawAnimation:[NSNumber numberWithInteger:1]];
+    }
+    
     self.mainView.needsDisplay = YES;
 }
 
@@ -193,7 +235,8 @@
 }
 
 - (IBAction)alarmDateSelected:(id)sender {
-    // TODO do something with this alarm time...
+    [[self.mainView render] drawAlarmDate:self.alarmDatePicker.dateValue];
+    self.mainView.needsDisplay = YES;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:self.alarmDatePicker.dateValue forKey:CONFIG_ALARM_TIME];

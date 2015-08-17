@@ -273,9 +273,9 @@
             <point key="canvasLocation" x="292.5" y="80.5"/>
         </menu>
         <datePicker verticalHuggingPriority="750" id="A2I-e6-ur5">
-            <rect key="frame" x="0.0" y="0.0" width="278" height="148"/>
+            <rect key="frame" x="0.0" y="0.0" width="200" height="31"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="aSU-YP-y5q">
+            <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="aSU-YP-y5q">
                 <font key="font" metaFont="system"/>
                 <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                     <!--1982-02-12 16:00:00 +0000-->

@@ -15,6 +15,9 @@
 - (id)initWithParent:(MainView *)par;
 - (NSSize)baseSize;
 
+- (void)blinkDots;
+- (void)drawAnimation:(NSInteger)state;
+- (void)drawAlarmDate:(NSDate *)alarm;
 - (void)drawDate:(BOOL)draw;
 - (void)drawWithDate:(NSDate *)date;
 - (void)drawWithEye:(NSInteger)eyeIndex;
