@@ -26,11 +26,15 @@
 #define EYE_BOTTOM_RIGHT 3
 #define EYE_BOTTOM_LEFT 1
 
+#define MAX_BLINK_DELAY 5.0
+#define UNBLINK_DELAY 0.1
+
 @interface MainWindow ()
 
 @property (assign) NSSize defaultSize;
 @property (assign) NSInteger startScale;
 @property (assign) NSInteger lastEyeState;
+@property (assign) BOOL currentlyBlinking;
 
 @property (weak) IBOutlet MainView *mainView;
 
@@ -53,6 +57,7 @@
 @synthesize defaultSize;
 @synthesize startScale;
 @synthesize lastEyeState;
+@synthesize currentlyBlinking;
 
 - (id)initWithContentRect:(NSRect)contentRect
                styleMask:(NSUInteger)aStyle
@@ -63,6 +68,7 @@
         [self setAlphaValue:1.0];
         [self setOpaque:NO];
         lastEyeState = EYE_TOP_LEFT;
+        currentlyBlinking = NO;
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
@@ -112,8 +118,29 @@
     if (startScale == 5) [self.changeSize5 setState:NSOnState];
     
     [[self.mainView render] drawWith:lastEyeState]; // Initialize render image
+    [self unblink]; // Schedule next blinking
     
     [self setFrame:frame display:YES];
+}
+
+- (void)blink {
+    if (currentlyBlinking == NO) {
+        currentlyBlinking = YES;
+        [[self.mainView render] drawWith:EYE_BLINK];
+        self.mainView.needsDisplay = YES;
+    }
+    
+    [self performSelector:@selector(unblink) withObject:nil afterDelay:UNBLINK_DELAY];
+}
+
+- (void)unblink {
+    if (currentlyBlinking == YES) {
+        currentlyBlinking = NO;
+        [[self.mainView render] drawWith:lastEyeState];
+        self.mainView.needsDisplay = YES;
+    }
+    
+    [self performSelector:@selector(blink) withObject:nil afterDelay:(((float)rand() / RAND_MAX) * MAX_BLINK_DELAY)];
 }
 
 - (IBAction)changeSize:(NSMenuItem *)sender {
@@ -243,8 +270,10 @@
     
     if (eyeState != lastEyeState) {
         lastEyeState = eyeState;
-        [[self.mainView render] drawWith:lastEyeState];
-        self.mainView.needsDisplay = YES;
+        if (currentlyBlinking == NO) {
+            [[self.mainView render] drawWith:lastEyeState];
+            self.mainView.needsDisplay = YES;
+        }
     }
 }
 
