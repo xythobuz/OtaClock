@@ -13,6 +13,7 @@
 		E92321D11B8128E700D79B33 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E92321CF1B8128E700D79B33 /* MainMenu.xib */; };
 		E92321E81B8129FD00D79B33 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321E71B8129FD00D79B33 /* MainView.m */; };
 		E92321EB1B812A1000D79B33 /* MainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321EA1B812A1000D79B33 /* MainWindow.m */; };
+		E92321EF1B8202D300D79B33 /* Render.m in Sources */ = {isa = PBXBuildFile; fileRef = E92321EE1B8202D300D79B33 /* Render.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,8 @@
 		E92321E71B8129FD00D79B33 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainView.m; sourceTree = "<group>"; };
 		E92321E91B812A1000D79B33 /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
 		E92321EA1B812A1000D79B33 /* MainWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindow.m; sourceTree = "<group>"; };
+		E92321ED1B8202D300D79B33 /* Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Render.h; sourceTree = "<group>"; };
+		E92321EE1B8202D300D79B33 /* Render.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Render.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +68,8 @@
 				E92321CF1B8128E700D79B33 /* MainMenu.xib */,
 				E92321E61B8129FD00D79B33 /* MainView.h */,
 				E92321E71B8129FD00D79B33 /* MainView.m */,
+				E92321ED1B8202D300D79B33 /* Render.h */,
+				E92321EE1B8202D300D79B33 /* Render.m */,
 				E92321E91B812A1000D79B33 /* MainWindow.h */,
 				E92321EA1B812A1000D79B33 /* MainWindow.m */,
 				E92321C61B8128E700D79B33 /* Supporting Files */,
@@ -171,6 +176,7 @@
 				E92321CC1B8128E700D79B33 /* main.m in Sources */,
 				E92321CA1B8128E700D79B33 /* AppDelegate.m in Sources */,
 				E92321E81B8129FD00D79B33 /* MainView.m in Sources */,
+				E92321EF1B8202D300D79B33 /* Render.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

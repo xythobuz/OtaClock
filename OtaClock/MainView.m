@@ -7,23 +7,22 @@
 //
 
 #import "MainWindow.h"
+#import "Render.h"
 #import "MainView.h"
 
-#define BASE_IMAGE_RESIZE_FACTOR 0.2
+@interface MainView ()
+
+@property (strong) Render *render;
+
+@end
 
 @implementation MainView
 
-@synthesize otaconImage;
+@synthesize render;
 
 -(void)awakeFromNib {
-    // Load background image
-    self.otaconImage = [NSImage imageNamed:@"Otacon"];
-    
-    // Set window to a useful default size
-    NSSize newSize = [otaconImage size];
-    newSize.width *= BASE_IMAGE_RESIZE_FACTOR;
-    newSize.height *= BASE_IMAGE_RESIZE_FACTOR;
-    [(MainWindow*)[self window] setDefaultBackgroundSize:newSize];
+    render = [[Render alloc] init];
+    [(MainWindow*)[self window] setDefaultBackgroundSize:[render baseSize]]; // Set window to a useful default size
 }
 
 -(void)drawRect:(NSRect)dirtyRect {
@@ -31,8 +30,8 @@
     [[NSColor clearColor] set];
     NSRectFill([self frame]);
     
-    // Draw main image into window bounds
-    [otaconImage drawInRect:[self bounds]];
+    [render drawWith:0]; // Should be done somewhere else!
+    [render drawInto:self]; // Draw composite image
 }
 
 -(BOOL)acceptsFirstMouse:(NSEvent *)theEvent {

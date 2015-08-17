@@ -10,6 +10,4 @@
 
 @interface MainView : NSView
 
-@property (strong) NSImage *otaconImage;
-
 @end
