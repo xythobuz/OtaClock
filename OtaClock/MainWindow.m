@@ -17,8 +17,8 @@
 #define CONFIG_KEEP_POSITION @"keep_position"
 #define CONFIG_KEEP_ON_TOP @"keep_on_top"
 
-#define MOUSE_CENTER_X 337
-#define MOUSE_CENTER_Y 237
+#define MOUSE_CENTER_X 67
+#define MOUSE_CENTER_Y 47
 
 #define EYE_BLINK 0
 #define EYE_TOP_RIGHT 4
@@ -135,10 +135,13 @@
             newSize.width *= i;
             frame.size = newSize;
             found = YES;
+            startScale = i;
             
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setInteger:i forKey:CONFIG_START_SCALE];
             [defaults synchronize];
+            
+            break;
         }
     }
     
@@ -226,8 +229,8 @@
     mousePoint.x -= [self frame].origin.x;
     mousePoint.y -= [self frame].origin.y;
     
-    BOOL top = (mousePoint.y > MOUSE_CENTER_Y);
-    BOOL right = (mousePoint.x > MOUSE_CENTER_X);
+    BOOL top = (mousePoint.y > (MOUSE_CENTER_Y * startScale));
+    BOOL right = (mousePoint.x > (MOUSE_CENTER_X * startScale));
     
     NSInteger eyeState = EYE_BOTTOM_LEFT;
     if (top && right) {
