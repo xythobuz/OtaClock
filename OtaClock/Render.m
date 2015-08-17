@@ -53,10 +53,17 @@
 #define ALARM_X_OFFSET 5
 #define ALARM_Y_OFFSET 57
 
+#define DOTS_TIME_Y_OFFSET 63
+#define DOTS_TIME_X0_OFFSET 18
+#define DOTS_TIME_X1_OFFSET 34
+
+#define DOTS_ALARM_X_OFFSET 38
+#define DOTS_ALARM_Y_OFFSET 57
+
 @interface Render ()
 
 @property (assign) CGImageRef otaconGraphic, bubbleGraphic, alarmGraphic;
-@property (assign) CGImageRef eye0, eye1, eye2, eye3, eye4;
+@property (assign) CGImageRef eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
 @property (assign) CGImageRef fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @property (assign) CGImageRef fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
 @property (assign) CGImageRef fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
@@ -65,7 +72,7 @@
 @property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @property (assign) NSInteger alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @property (assign) NSInteger timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@property (assign) BOOL alarmSign;
+@property (assign) BOOL alarmSign, alarmDots, timeDots;
 
 @property (assign) NSSize fullSize;
 @property (assign) CGContextRef drawContext;
@@ -77,7 +84,7 @@
 @implementation Render
 
 @synthesize otaconGraphic, bubbleGraphic, alarmGraphic;
-@synthesize eye0, eye1, eye2, eye3, eye4;
+@synthesize eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
 @synthesize fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
 @synthesize fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
 @synthesize fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
@@ -86,7 +93,7 @@
 @synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @synthesize alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @synthesize timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@synthesize alarmSign;
+@synthesize alarmSign, alarmDots, timeDots;
 
 @synthesize fullSize;
 @synthesize drawContext;
@@ -166,12 +173,16 @@
     NSImage *fontSmallImage = [NSImage imageNamed:@"font_small"];
     NSImage *fontLargeImage = [NSImage imageNamed:@"font_large"];
     NSImage *alarmImage = [NSImage imageNamed:@"alarm"];
+    NSImage *dotsSmallImage = [NSImage imageNamed:@"dots_small"];
+    NSImage *dotsLargeImage = [NSImage imageNamed:@"dots_large"];
     
     NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithAttributes:nil];
     
     otaconGraphic = [otaconImage CGImageForProposedRect:nil context:context hints:nil];
     bubbleGraphic = [bubbleImage CGImageForProposedRect:nil context:context hints:nil];
     alarmGraphic = [alarmImage CGImageForProposedRect:nil context:context hints:nil];
+    dotSmallGraphic = [dotsSmallImage CGImageForProposedRect:nil context:context hints:nil];
+    dotLargeGraphic = [dotsLargeImage CGImageForProposedRect:nil context:context hints:nil];
     eye0 = [eye0Image CGImageForProposedRect:nil context:context hints:nil];
     eye1 = [eye1Image CGImageForProposedRect:nil context:context hints:nil];
     eye2 = [eye2Image CGImageForProposedRect:nil context:context hints:nil];
@@ -260,17 +271,20 @@
     dateDigit1 = 8;
     dateDigit2 = 8;
     dateDigit3 = 8;
-    alarmDigit0 = 8;
-    alarmDigit1 = 8;
-    alarmDigit2 = 8;
-    alarmDigit3 = 8;
     timeDigit0 = 8;
     timeDigit1 = 8;
     timeDigit2 = 8;
     timeDigit3 = 8;
     timeDigit4 = 8;
     timeDigit5 = 8;
-    alarmSign = YES;
+    timeDots = YES;
+    
+    alarmDigit0 = -1;
+    alarmDigit1 = -1;
+    alarmDigit2 = -1;
+    alarmDigit3 = -1;
+    alarmSign = NO;
+    alarmDots = NO;
     
     return self;
 }
@@ -279,32 +293,38 @@
     return fullSize;
 }
 
+#define CONVERT_DECIMAL(num, ten, one) do { \
+    if (num >= 50) { \
+        ten = 5; \
+        one = num - 50; \
+    } else if (num >= 40) { \
+        ten = 4; \
+        one = num - 40; \
+    } else if (num >= 30) { \
+        ten = 3; \
+        one = num - 30; \
+    } else if (num >= 20) { \
+        ten = 2; \
+        one = num - 20; \
+    } else if (num >= 10) { \
+        ten = 1; \
+        one = num - 10; \
+    } else { \
+        ten = 0; \
+        one = num; \
+    } \
+} while (0);
+
 - (void)drawWithDate:(NSDate *)date {
     NSCalendarUnit comps = NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
     NSDateComponents *components = [[NSCalendar currentCalendar] components:comps fromDate:date];
     dayOfWeek = [components weekday] - 2; // map sun=1 to sun=-1
     
-    if ([components month] >= 10) {
-        dateDigit0 = 1;
-        dateDigit1 = [components month] - 10;
-    } else {
-        dateDigit0 = 0;
-        dateDigit1 = [components month];
-    }
-    
-    if ([components day] >= 30) {
-        dateDigit2 = 3;
-        dateDigit3 = [components day] - 30;
-    } else if ([components day] >= 20) {
-        dateDigit2 = 2;
-        dateDigit3 = [components day] - 20;
-    } else if ([components day] >= 10) {
-        dateDigit2 = 1;
-        dateDigit3 = [components day] - 10;
-    } else {
-        dateDigit2 = 0;
-        dateDigit3 = [components day];
-    }
+    CONVERT_DECIMAL([components month], dateDigit0, dateDigit1);
+    CONVERT_DECIMAL([components day], dateDigit2, dateDigit3);
+    CONVERT_DECIMAL([components hour], timeDigit0, timeDigit1);
+    CONVERT_DECIMAL([components minute], timeDigit2, timeDigit3);
+    CONVERT_DECIMAL([components second], timeDigit4, timeDigit5);
 }
 
 - (void)drawWithEye:(NSInteger)eyeIndex {
@@ -382,6 +402,17 @@
         CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit5]);
     }
     
+    // Draw dots between hours, minutes and seconds
+    if (timeDots == YES) {
+        size.size.width = CGImageGetWidth(dotLargeGraphic);
+        size.size.height = CGImageGetHeight(dotLargeGraphic);
+        size.origin.y = DOTS_TIME_Y_OFFSET;
+        size.origin.x = DOTS_TIME_X0_OFFSET;
+        CGContextDrawImage(drawContext, size, dotLargeGraphic);
+        size.origin.x = DOTS_TIME_X1_OFFSET;
+        CGContextDrawImage(drawContext, size, dotLargeGraphic);
+    }
+    
     // Draw Alarm Graphic
     if (alarmSign == YES) {
         size.size.width = CGImageGetWidth(alarmGraphic);
@@ -389,6 +420,15 @@
         size.origin.x = ALARM_X_OFFSET;
         size.origin.y = ALARM_Y_OFFSET;
         CGContextDrawImage(drawContext, size, alarmGraphic);
+    }
+    
+    // Draw dots between alarm hours and minutes
+    if (alarmDots == YES) {
+        size.size.width = CGImageGetWidth(dotSmallGraphic);
+        size.size.height = CGImageGetHeight(dotSmallGraphic);
+        size.origin.x = DOTS_ALARM_X_OFFSET;
+        size.origin.y = DOTS_ALARM_Y_OFFSET;
+        CGContextDrawImage(drawContext, size, dotSmallGraphic);
     }
     
     // Draw Alarm Time

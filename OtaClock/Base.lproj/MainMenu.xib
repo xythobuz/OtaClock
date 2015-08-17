@@ -147,6 +147,12 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="aVS-e6-OtM"/>
+                <menuItem title="About OtaClock" id="Tlq-91-8IJ">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="orderFrontStandardAboutPanel:" target="-1" id="VRw-6e-aO6"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Quit OtaClock" keyEquivalent="q" id="BNj-pS-CpH">
                     <connections>
                         <action selector="terminate:" target="-1" id="19f-sZ-hYK"/>
