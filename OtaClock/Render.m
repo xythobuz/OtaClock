@@ -22,12 +22,29 @@
 #define FONT_DAYS_X_OFFSET 31
 #define FONT_DAYS_Y_OFFSET 72
 
+#define FONT_LARGE_WIDTH 6
+#define FONT_LARGE_HEIGHT 7
+#define FONT_LARGE_PADDING 1
+
+#define FONT_SMALL_WIDTH 4
+#define FONT_SMALL_HEIGHT 5
+#define FONT_SMALL_PADDING 1
+#define FONT_SMALL_DATE_Y_OFFSET 71
+#define FONT_SMALL_DATE_X0_OFFSET 3
+#define FONT_SMALL_DATE_X1_OFFSET 8
+#define FONT_SMALL_DATE_X2_OFFSET 17
+#define FONT_SMALL_DATE_X3_OFFSET 22
+
 @interface Render ()
 
 @property (assign) CGImageRef otaconGraphic, bubbleGraphic;
 @property (assign) CGImageRef eye0, eye1, eye2, eye3, eye4;
 @property (assign) CGImageRef fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
+@property (assign) CGImageRef fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
+@property (assign) CGImageRef fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
+
 @property (assign) NSInteger eyeToDraw, dayOfWeek;
+@property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 
 @property (assign) NSSize fullSize;
 @property (assign) CGContextRef drawContext;
@@ -41,7 +58,11 @@
 @synthesize otaconGraphic, bubbleGraphic;
 @synthesize eye0, eye1, eye2, eye3, eye4;
 @synthesize fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
+@synthesize fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
+@synthesize fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
+
 @synthesize eyeToDraw, dayOfWeek;
+@synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 
 @synthesize fullSize;
 @synthesize drawContext;
@@ -72,6 +93,38 @@
     return fontMonday;
 }
 
+- (CGImageRef)smallHelper:(NSInteger)index {
+    if (index == 0) return fontSmall0;
+    if (index == 1) return fontSmall1;
+    if (index == 2) return fontSmall2;
+    if (index == 3) return fontSmall3;
+    if (index == 4) return fontSmall4;
+    if (index == 5) return fontSmall5;
+    if (index == 6) return fontSmall6;
+    if (index == 7) return fontSmall7;
+    if (index == 8) return fontSmall8;
+    if (index == 9) return fontSmall9;
+    
+    NSLog(@"Render:smallHelper:%ld unknown index!", (long)index);
+    return fontSmall0;
+}
+
+- (CGImageRef)largeHelper:(NSInteger)index {
+    if (index == 0) return fontLarge0;
+    if (index == 1) return fontLarge1;
+    if (index == 2) return fontLarge2;
+    if (index == 3) return fontLarge3;
+    if (index == 4) return fontLarge4;
+    if (index == 5) return fontLarge5;
+    if (index == 6) return fontLarge6;
+    if (index == 7) return fontLarge7;
+    if (index == 8) return fontLarge8;
+    if (index == 9) return fontLarge9;
+    
+    NSLog(@"Render:largeHelper:%ld unknown index!", (long)index);
+    return fontLarge0;
+}
+
 - (id)initWithParent:(MainView *)par {
     self = [super init];
     if (self == nil) return nil;
@@ -86,6 +139,8 @@
     NSImage *eye3Image = [NSImage imageNamed:@"eyes_3"];
     NSImage *eye4Image = [NSImage imageNamed:@"eyes_4"];
     NSImage *fontDaysImage = [NSImage imageNamed:@"font_days"];
+    NSImage *fontSmallImage = [NSImage imageNamed:@"font_small"];
+    NSImage *fontLargeImage = [NSImage imageNamed:@"font_large"];
     
     NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithAttributes:nil];
     
@@ -117,6 +172,57 @@
     rectDay.origin.y += FONT_DAYS_HEIGHT + FONT_DAYS_PADDING;
     fontSunday = CGImageCreateWithImageInRect(fontDays, rectDay);
     
+    NSRect rect;
+    CGImageRef fontSmall = [fontSmallImage CGImageForProposedRect:nil context:context hints:nil];
+    rect.size.width = FONT_SMALL_WIDTH;
+    rect.size.height = FONT_SMALL_HEIGHT;
+    rect.origin.x = 0;
+    rect.origin.y = 0;
+    fontSmall0 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall1 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall2 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall3 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall4 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall5 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall6 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall7 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall8 = CGImageCreateWithImageInRect(fontSmall, rect);
+    rect.origin.x += FONT_SMALL_WIDTH + FONT_SMALL_PADDING;
+    fontSmall9 = CGImageCreateWithImageInRect(fontSmall, rect);
+    
+    CGImageRef fontLarge = [fontLargeImage CGImageForProposedRect:nil context:context hints:nil];
+    rect.size.width = FONT_LARGE_WIDTH;
+    rect.size.height = FONT_LARGE_HEIGHT;
+    rect.origin.x = 0;
+    rect.origin.y = 0;
+    fontLarge0 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge1 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge2 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge3 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge4 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge5 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge6 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge7 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge8 = CGImageCreateWithImageInRect(fontLarge, rect);
+    rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
+    fontLarge9 = CGImageCreateWithImageInRect(fontLarge, rect);
+    
     fullSize.width = FULL_IMAGE_WIDTH;
     fullSize.height = FULL_IMAGE_HEIGHT;
     
@@ -124,6 +230,10 @@
     
     eyeToDraw = 0;
     dayOfWeek = 0;
+    dateDigit0 = 1;
+    dateDigit1 = 8;
+    dateDigit2 = 8;
+    dateDigit3 = 8;
     
     return self;
 }
@@ -133,9 +243,31 @@
 }
 
 - (void)drawWithDate:(NSDate *)date {
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date];
-    dayOfWeek = [components weekday] - 2;
+    NSCalendarUnit comps = NSWeekdayCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:comps fromDate:date];
+    dayOfWeek = [components weekday] - 2; // map sun=1 to sun=-1
     
+    if ([components month] >= 10) {
+        dateDigit0 = 1;
+        dateDigit1 = [components month] - 10;
+    } else {
+        dateDigit0 = 0;
+        dateDigit1 = [components month];
+    }
+    
+    if ([components day] >= 30) {
+        dateDigit2 = 3;
+        dateDigit3 = [components day] - 30;
+    } else if ([components day] >= 20) {
+        dateDigit2 = 2;
+        dateDigit3 = [components day] - 20;
+    } else if ([components day] >= 10) {
+        dateDigit2 = 1;
+        dateDigit3 = [components day] - 10;
+    } else {
+        dateDigit2 = 0;
+        dateDigit3 = [components day];
+    }
     
     // Check if something changed, if so, set needsDisplay
     // if (bla) {
@@ -159,8 +291,21 @@
     size.size.height = CGImageGetHeight(bubbleGraphic);
     size.origin.y = BUBBLE_Y_OFFSET;
     CGContextDrawImage(drawContext, size, bubbleGraphic);
-    
+
     // Draw Date
+    size.size.width = FONT_SMALL_WIDTH;
+    size.size.height = FONT_SMALL_HEIGHT;
+    size.origin.y = FONT_SMALL_DATE_Y_OFFSET;
+    if (dateDigit0 == 1) {
+        size.origin.x = FONT_SMALL_DATE_X0_OFFSET;
+        CGContextDrawImage(drawContext, size, fontSmall1);
+    }
+    size.origin.x = FONT_SMALL_DATE_X1_OFFSET;
+    CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit1]);
+    size.origin.x = FONT_SMALL_DATE_X2_OFFSET;
+    CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit2]);
+    size.origin.x = FONT_SMALL_DATE_X3_OFFSET;
+    CGContextDrawImage(drawContext, size, [self smallHelper:dateDigit3]);
 
     // Draw Day of Week
     CGImageRef day = [self dayHelper:dayOfWeek];
