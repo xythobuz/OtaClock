@@ -55,6 +55,7 @@
 @property (weak) IBOutlet NSMenuItem *showDateItem;
 @property (weak) IBOutlet NSMenuItem *alarmModeItem;
 @property (weak) IBOutlet NSMenuItem *alarmTextItem;
+@property (weak) IBOutlet NSMenuItem *militaryTimeItem;
 
 @property (weak) IBOutlet NSMenuItem *changeSize1;
 @property (weak) IBOutlet NSMenuItem *changeSize2;
@@ -172,6 +173,7 @@
         self.showDateItem.state = NSOffState;
     }
     
+    // load alarm mode state
     if ([defaults objectForKey:CONFIG_ALARM_MODE] != nil) {
         if ([defaults boolForKey:CONFIG_ALARM_MODE] == YES) {
             [self.alarmModeItem setState:NSOnState];
@@ -179,9 +181,41 @@
         }
     }
     
+    // load military time state
+    if ([defaults objectForKey:CONFIG_MILITARY_TIME] == nil) {
+        [self.militaryTimeItem setState:NSOnState];
+        [[self.mainView render] drawMilitaryTime:YES];
+    } else {
+        if ([defaults boolForKey:CONFIG_MILITARY_TIME]) {
+            [self.militaryTimeItem setState:NSOnState];
+            [[self.mainView render] drawMilitaryTime:YES];
+        } else {
+            [[self.mainView render] drawMilitaryTime:NO];
+        }
+    }
+    
     [[self.mainView render] drawDate:showDate];
     
     [self setFrame:frame display:YES];
+}
+
+- (IBAction)toggleMilitaryTime:(id)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if (self.militaryTimeItem.state == NSOnState) {
+        // Turn off military time
+        [self.militaryTimeItem setState:NSOffState];
+        [[self.mainView render] drawMilitaryTime:NO];
+        [defaults setBool:NO forKey:CONFIG_MILITARY_TIME];
+    } else {
+        // Turn on military time
+        [self.militaryTimeItem setState:NSOnState];
+        [[self.mainView render] drawMilitaryTime:YES];
+        [defaults setBool:YES forKey:CONFIG_MILITARY_TIME];
+    }
+    
+    [defaults synchronize];
+    self.mainView.needsDisplay = YES;
 }
 
 - (IBAction)toggleAlarm:(id)sender {
@@ -238,8 +272,7 @@
     if (self.alarmModeItem.state == NSOnState) {
         NSDateComponents *alarmComponents = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:self.alarmDatePicker.dateValue];
         if (([components minute] == [alarmComponents minute]) && ([components hour] == [alarmComponents hour]) && ([components second] == 0)) {
-            // We have reached the alarm time
-            NSLog(@"Alarm time reached!");
+            NSLog(@"Alarm time reached! (%02ld:%02ld)", (long)[alarmComponents hour], (long)[alarmComponents minute]);
             [self drawAnimation:[NSNumber numberWithInteger:1]];
         }
     }

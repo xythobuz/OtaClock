@@ -53,6 +53,10 @@
 #define FONT_SMALL_ALARM_X2_OFFSET 41
 #define FONT_SMALL_ALARM_X3_OFFSET 46
 
+#define FONT_TIME_WIDTH 11
+#define FONT_TIME_HEIGHT 3
+#define FONT_TIME_PADDING 1
+
 #define ALARM_X_OFFSET 5
 #define ALARM_Y_OFFSET 57
 
@@ -71,7 +75,7 @@
 @property (assign) CGImageRef otaconGraphic, bubbleGraphic, alarmGraphic, blankGraphic;
 @property (assign) CGImageRef otacon1Graphic, otacon2Graphic, otacon3Graphic;
 @property (assign) CGImageRef eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
-@property (assign) CGImageRef fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
+@property (assign) CGImageRef fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday, fontAM, fontPM;
 @property (assign) CGImageRef fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
 @property (assign) CGImageRef fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
 
@@ -79,7 +83,7 @@
 @property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @property (assign) NSInteger alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @property (assign) NSInteger timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@property (assign) BOOL alarmSign, alarmDots, timeDots, drawDate;
+@property (assign) BOOL alarmSign, alarmDots, timeDots, drawDate, militaryTime, isAfternoon;
 
 @property (assign) NSSize fullSize;
 @property (assign) CGContextRef drawContext;
@@ -93,7 +97,7 @@
 @synthesize otaconGraphic, bubbleGraphic, alarmGraphic, blankGraphic;
 @synthesize otacon1Graphic, otacon2Graphic, otacon3Graphic;
 @synthesize eye0, eye1, eye2, eye3, eye4, dotSmallGraphic, dotLargeGraphic;
-@synthesize fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday;
+@synthesize fontMonday, fontTuesday, fontWednesday, fontThursday, fontFriday, fontSaturday, fontSunday, fontAM, fontPM;
 @synthesize fontSmall1, fontSmall2, fontSmall3, fontSmall4, fontSmall5, fontSmall6, fontSmall7, fontSmall8, fontSmall9, fontSmall0;
 @synthesize fontLarge1, fontLarge2, fontLarge3, fontLarge4, fontLarge5, fontLarge6, fontLarge7, fontLarge8, fontLarge9, fontLarge0;
 
@@ -101,7 +105,7 @@
 @synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @synthesize alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @synthesize timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@synthesize alarmSign, alarmDots, timeDots, drawDate;
+@synthesize alarmSign, alarmDots, timeDots, drawDate, militaryTime, isAfternoon;
 
 @synthesize fullSize;
 @synthesize drawContext;
@@ -180,6 +184,7 @@
     NSImage *fontDaysImage = [NSImage imageNamed:@"font_days"];
     NSImage *fontSmallImage = [NSImage imageNamed:@"font_small"];
     NSImage *fontLargeImage = [NSImage imageNamed:@"font_large"];
+    NSImage *fontTimeImage = [NSImage imageNamed:@"font_time"];
     NSImage *alarmImage = [NSImage imageNamed:@"alarm"];
     NSImage *dotsSmallImage = [NSImage imageNamed:@"dots_small"];
     NSImage *dotsLargeImage = [NSImage imageNamed:@"dots_large"];
@@ -276,6 +281,15 @@
     rect.origin.x += FONT_LARGE_WIDTH + FONT_LARGE_PADDING;
     fontLarge9 = CGImageCreateWithImageInRect(fontLarge, rect);
     
+    CGImageRef fontTime = [fontTimeImage CGImageForProposedRect:nil context:context hints:nil];
+    rect.size.width = FONT_TIME_WIDTH;
+    rect.size.height = FONT_TIME_HEIGHT;
+    rect.origin.x = 0;
+    rect.origin.y = 0;
+    fontAM = CGImageCreateWithImageInRect(fontTime, rect);
+    rect.origin.y += FONT_TIME_HEIGHT + FONT_TIME_PADDING;
+    fontPM = CGImageCreateWithImageInRect(fontTime, rect);
+    
     fullSize.width = FULL_IMAGE_WIDTH;
     fullSize.height = FULL_IMAGE_HEIGHT;
     
@@ -295,6 +309,8 @@
     timeDigit4 = 8;
     timeDigit5 = 8;
     timeDots = YES;
+    militaryTime = NO;
+    isAfternoon = NO;
     
     alarmDigit0 = -1;
     alarmDigit1 = -1;
@@ -339,6 +355,11 @@
     }
 }
 
+- (void)drawMilitaryTime:(BOOL)mil {
+    militaryTime = mil;
+    [self drawWithDate:[NSDate date]];
+}
+
 - (void)drawAnimation:(NSInteger)state {
     if (animState != state) {
         [[self.parent window] invalidateShadow];
@@ -374,11 +395,34 @@
     NSDateComponents *components = [[NSCalendar currentCalendar] components:comps fromDate:date];
     dayOfWeek = [components weekday] - 2; // map sun=1 to sun=-1
     
+    // Convert from military time to am/pm format if neccessary
+    NSInteger hour = [components hour];
+    if (militaryTime == NO) {
+        if (hour == 0) {
+            hour = 12;
+            isAfternoon = false;
+        } else if (hour == 12) {
+            isAfternoon = true;
+        } else if (hour > 12) {
+            isAfternoon = true;
+            hour -= 12;
+        } else if (hour < 12) {
+            isAfternoon = false;
+        }
+    }
+    
     CONVERT_DECIMAL([components month], dateDigit0, dateDigit1);
     CONVERT_DECIMAL([components day], dateDigit2, dateDigit3);
-    CONVERT_DECIMAL([components hour], timeDigit0, timeDigit1);
+    CONVERT_DECIMAL(hour, timeDigit0, timeDigit1);
     CONVERT_DECIMAL([components minute], timeDigit2, timeDigit3);
     CONVERT_DECIMAL([components second], timeDigit4, timeDigit5);
+    
+    // Remove leading hour zero when drawing in am/pm mode
+    if (militaryTime == NO) {
+        if (timeDigit0 == 0) {
+            timeDigit0 = -1;
+        }
+    }
 }
 
 - (void)drawWithEye:(NSInteger)eyeIndex {
@@ -456,13 +500,22 @@
         size.origin.x = FONT_LARGE_X3_OFFSET;
         CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit3]);
     }
-    if ((timeDigit4 >= 0) && (timeDigit4 <= 9)) {
-        size.origin.x = FONT_LARGE_X4_OFFSET;
-        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit4]);
-    }
-    if ((timeDigit5 >= 0) && (timeDigit5 <= 9)) {
-        size.origin.x = FONT_LARGE_X5_OFFSET;
-        CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit5]);
+    if (militaryTime == YES) {
+        if ((timeDigit4 >= 0) && (timeDigit4 <= 9)) {
+            size.origin.x = FONT_LARGE_X4_OFFSET;
+            CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit4]);
+        }
+        if ((timeDigit5 >= 0) && (timeDigit5 <= 9)) {
+            size.origin.x = FONT_LARGE_X5_OFFSET;
+            CGContextDrawImage(drawContext, size, [self largeHelper:timeDigit5]);
+        }
+    } else {
+        // Draw AM/PM marker
+        size.size.width = FONT_TIME_WIDTH;
+        size.size.height = FONT_TIME_HEIGHT;
+        size.origin.x = 36;
+        size.origin.y = 63;
+        CGContextDrawImage(drawContext, size, isAfternoon ? fontPM : fontAM);
     }
     
     // Draw dots between hours, minutes and seconds
@@ -472,8 +525,10 @@
         size.origin.y = DOTS_TIME_Y_OFFSET;
         size.origin.x = DOTS_TIME_X0_OFFSET;
         CGContextDrawImage(drawContext, size, dotLargeGraphic);
-        size.origin.x = DOTS_TIME_X1_OFFSET;
-        CGContextDrawImage(drawContext, size, dotLargeGraphic);
+        if (militaryTime == YES) {
+            size.origin.x = DOTS_TIME_X1_OFFSET;
+            CGContextDrawImage(drawContext, size, dotLargeGraphic);
+        }
     }
     
     // Draw Alarm Graphic

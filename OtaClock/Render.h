@@ -16,6 +16,7 @@
 - (NSSize)baseSize;
 
 - (void)blinkDots;
+- (void)drawMilitaryTime:(BOOL)mil;
 - (void)drawAnimation:(NSInteger)state;
 - (void)drawAlarmDate:(NSDate *)alarm;
 - (void)drawDate:(BOOL)draw;

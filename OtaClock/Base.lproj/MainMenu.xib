@@ -99,6 +99,7 @@
                 <outlet property="keepOnTopItem" destination="LVI-ch-nme" id="lL1-Yi-zMN"/>
                 <outlet property="lockPositionItem" destination="ShL-8K-SbX" id="ppY-l8-Bda"/>
                 <outlet property="mainView" destination="EiT-Mj-1SZ" id="sQZ-BE-YrX"/>
+                <outlet property="militaryTimeItem" destination="Cgd-DK-xB0" id="7Sz-zg-2dg"/>
                 <outlet property="setAlarmItem" destination="IRB-i7-bez" id="V2f-2Y-Eyh"/>
                 <outlet property="showDateItem" destination="0Cy-4I-9bF" id="T7y-ik-8nT"/>
             </connections>
@@ -112,6 +113,9 @@
                         <items>
                             <menuItem title="Military Time" id="Cgd-DK-xB0">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleMilitaryTime:" target="QvC-M9-y7g" id="hoC-N1-2pe"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Alarm Mode" id="S8W-ak-RY9">
                                 <modifierMask key="keyEquivalentModifierMask"/>
