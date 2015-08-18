@@ -96,6 +96,7 @@
                 <outlet property="changeSize7" destination="7sp-5h-kYL" id="ore-Fs-2W9"/>
                 <outlet property="changeSize8" destination="WnO-2m-uXI" id="jKZ-CW-zyj"/>
                 <outlet property="changeSize9" destination="NhP-qX-OsO" id="yL9-ON-q1Y"/>
+                <outlet property="dropShadowItem" destination="4eS-hA-ECa" id="i60-fH-hLA"/>
                 <outlet property="keepOnTopItem" destination="LVI-ch-nme" id="lL1-Yi-zMN"/>
                 <outlet property="lockPositionItem" destination="ShL-8K-SbX" id="ppY-l8-Bda"/>
                 <outlet property="mainView" destination="EiT-Mj-1SZ" id="sQZ-BE-YrX"/>
@@ -143,6 +144,9 @@
                             </menuItem>
                             <menuItem title="Drop Shadow" id="4eS-hA-ECa">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleDropShadow:" target="QvC-M9-y7g" id="JNQ-x1-O17"/>
+                                </connections>
                             </menuItem>
                         </items>
                     </menu>

@@ -7,6 +7,7 @@
 //
 
 #import "MainView.h"
+#import "MainWindow.h"
 #import "Render.h"
 
 #define FULL_IMAGE_WIDTH 86
@@ -83,7 +84,7 @@
 @property (assign) NSInteger dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @property (assign) NSInteger alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @property (assign) NSInteger timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@property (assign) BOOL alarmSign, alarmDots, timeDots, drawDate, militaryTime, isAfternoon;
+@property (assign) BOOL alarmSign, alarmDots, timeDots, drawDate, militaryTime, isAfternoon, dropShadow;
 
 @property (assign) NSSize fullSize;
 @property (assign) CGContextRef drawContext;
@@ -105,7 +106,7 @@
 @synthesize dateDigit0, dateDigit1, dateDigit2, dateDigit3;
 @synthesize alarmDigit0, alarmDigit1, alarmDigit2, alarmDigit3;
 @synthesize timeDigit0, timeDigit1, timeDigit2, timeDigit3, timeDigit4, timeDigit5;
-@synthesize alarmSign, alarmDots, timeDots, drawDate, militaryTime, isAfternoon;
+@synthesize alarmSign, alarmDots, timeDots, drawDate, militaryTime, isAfternoon, dropShadow;
 
 @synthesize fullSize;
 @synthesize drawContext;
@@ -319,6 +320,8 @@
     alarmSign = NO;
     alarmDots = NO;
     
+    dropShadow = NO;
+    
     return self;
 }
 
@@ -353,6 +356,11 @@
     if ((alarmDigit0 != -1) || (alarmDigit1 != -1) || (alarmDigit2 != -1) || (alarmDigit3 != -1)) {
         alarmDots = timeDots;
     }
+}
+
+- (void)drawDropShadow:(BOOL)shadow {
+    dropShadow = shadow;
+    [self drawWithDate:[NSDate date]];
 }
 
 - (void)drawMilitaryTime:(BOOL)mil {
@@ -602,10 +610,29 @@
         
     }
     
-    // Render resulting canvas into bitmap and scale this into our window
+    // Render resulting canvas into bitmap
     CGImageRef drawnImage = CGBitmapContextCreateImage(drawContext);
+    
+    // Add Drop Shadow if required
+    if (dropShadow == YES) {
+        NSShadow *shadow = [[NSShadow alloc] init];
+        [shadow setShadowOffset:NSMakeSize(DROP_SHADOW_OFFSET_VIS * [(MainWindow *)[view window] startScale], -DROP_SHADOW_OFFSET_VIS * [(MainWindow *)[view window] startScale])];
+        [shadow setShadowBlurRadius:DROP_SHADOR_BLUR];
+        [shadow setShadowColor:[NSColor colorWithCalibratedRed:DROP_SHADOW_RED green:DROP_SHADOW_GREEN blue:DROP_SHADOW_BLUE alpha:DROP_SHADOW_ALPHA]];
+        [shadow set];
+    }
+    
+    // Leave some space for the drop shadow
+    NSRect bound = [view bounds];
+    if (dropShadow == YES) {
+        bound.size.width -= DROP_SHADOW_OFFSET * [(MainWindow *)[view window] startScale];
+        bound.size.height -= DROP_SHADOW_OFFSET * [(MainWindow *)[view window] startScale];
+        bound.origin.y += DROP_SHADOW_OFFSET * [(MainWindow *)[view window] startScale];
+    }
+    
+    // Scale bitmap into the window
     NSImage *result = [[NSImage alloc] initWithCGImage:drawnImage size:fullSize];
-    [result drawInRect:[view bounds] fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:NO hints:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:NSImageInterpolationNone] forKey:NSImageHintInterpolation]];
+    [result drawInRect:bound fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:NO hints:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:NSImageInterpolationNone] forKey:NSImageHintInterpolation]];
     CGImageRelease(drawnImage);
 }
 

@@ -14,5 +14,6 @@
 
 @property (assign) NSPoint dragStart;
 @property (assign) BOOL keepPosition;
+@property (assign) NSInteger startScale;
 
 @end

@@ -20,6 +20,7 @@
 #define CONFIG_SHOW_DATE @"show_date"
 #define CONFIG_ALARM_TIME @"alarm_time"
 #define CONFIG_ALARM_MODE @"alarm_mode"
+#define CONFIG_DROP_SHADOW @"drop_shadow"
 
 #define MOUSE_CENTER_X 67
 #define MOUSE_CENTER_Y 47
@@ -42,7 +43,6 @@
 @interface MainWindow ()
 
 @property (assign) NSSize defaultSize;
-@property (assign) NSInteger startScale;
 @property (assign) NSInteger lastEyeState;
 @property (assign) BOOL currentlyBlinking, showDate;
 
@@ -56,6 +56,7 @@
 @property (weak) IBOutlet NSMenuItem *alarmModeItem;
 @property (weak) IBOutlet NSMenuItem *alarmTextItem;
 @property (weak) IBOutlet NSMenuItem *militaryTimeItem;
+@property (weak) IBOutlet NSMenuItem *dropShadowItem;
 
 @property (weak) IBOutlet NSMenuItem *changeSize1;
 @property (weak) IBOutlet NSMenuItem *changeSize2;
@@ -125,7 +126,6 @@
     defaultSize = size;
     NSRect frame = [self frame];
     frame.size = defaultSize;
-    
     frame.size.width *= startScale;
     frame.size.height *= startScale;
     
@@ -194,9 +194,56 @@
         }
     }
     
+    // load drop shadow state
+    if ([defaults objectForKey:CONFIG_DROP_SHADOW] != nil) {
+        if ([defaults boolForKey:CONFIG_DROP_SHADOW]) {
+            [[self.mainView render] drawDropShadow:YES];
+            [self.dropShadowItem setState:NSOnState];
+            
+            // increase window size
+            frame.size.width += DROP_SHADOW_OFFSET * startScale;
+            frame.size.height += DROP_SHADOW_OFFSET * startScale;
+            frame.origin.y -= DROP_SHADOW_OFFSET * startScale;
+        }
+    }
+    
     [[self.mainView render] drawDate:showDate];
     
     [self setFrame:frame display:YES];
+}
+
+- (IBAction)toggleDropShadow:(id)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if (self.dropShadowItem.state == NSOnState) {
+        // Turn off drop shadow
+        [self.dropShadowItem setState:NSOffState];
+        [[self.mainView render] drawDropShadow:NO];
+        [defaults setBool:NO forKey:CONFIG_DROP_SHADOW];
+        
+        // decrease window size
+        NSRect rect = [self frame];
+        rect.size = defaultSize;
+        rect.size.width *= startScale;
+        rect.size.height *= startScale;
+        rect.origin.y += DROP_SHADOW_OFFSET * startScale;
+        [self setFrame:rect display:YES];
+    } else {
+        // Turn on drop shadow
+        [self.dropShadowItem setState:NSOnState];
+        [[self.mainView render] drawDropShadow:YES];
+        [defaults setBool:YES forKey:CONFIG_DROP_SHADOW];
+        
+        // increase window size
+        NSRect rect = [self frame];
+        rect.size.width += DROP_SHADOW_OFFSET * startScale;
+        rect.size.height += DROP_SHADOW_OFFSET * startScale;
+        rect.origin.y -= DROP_SHADOW_OFFSET * startScale;
+        [self setFrame:rect display:YES];
+    }
+    
+    [defaults synchronize];
+    self.mainView.needsDisplay = YES;
 }
 
 - (IBAction)toggleMilitaryTime:(id)sender {
@@ -350,6 +397,10 @@
         if ([[sender title] isEqualToString:title]) {
             [sender setState:NSOnState];
             NSSize newSize = defaultSize;
+            if (self.dropShadowItem.state == NSOnState) {
+                newSize.width += DROP_SHADOW_OFFSET;
+                newSize.height += DROP_SHADOW_OFFSET;
+            }
             newSize.height *= i;
             newSize.width *= i;
             frame.size = newSize;
