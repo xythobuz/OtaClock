@@ -19,6 +19,7 @@
 #define CONFIG_MILITARY_TIME @"military_time"
 #define CONFIG_SHOW_DATE @"show_date"
 #define CONFIG_ALARM_TIME @"alarm_time"
+#define CONFIG_ALARM_MODE @"alarm_mode"
 
 #define MOUSE_CENTER_X 67
 #define MOUSE_CENTER_Y 47
@@ -52,6 +53,8 @@
 @property (weak) IBOutlet NSMenuItem *keepOnTopItem;
 @property (weak) IBOutlet NSMenuItem *setAlarmItem;
 @property (weak) IBOutlet NSMenuItem *showDateItem;
+@property (weak) IBOutlet NSMenuItem *alarmModeItem;
+@property (weak) IBOutlet NSMenuItem *alarmTextItem;
 
 @property (weak) IBOutlet NSMenuItem *changeSize1;
 @property (weak) IBOutlet NSMenuItem *changeSize2;
@@ -154,6 +157,8 @@
         self.alarmDatePicker.dateValue = [defaults objectForKey:CONFIG_ALARM_TIME];
     }
     self.setAlarmItem.view = self.alarmDatePicker;
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:self.alarmDatePicker.dateValue];
+    [self.alarmTextItem setTitle:[NSString stringWithFormat:@"%02ld:%02ld", (long)[components hour], (long)[components minute]]];
     
     // load show date state
     if ([defaults objectForKey:CONFIG_SHOW_DATE] == nil) {
@@ -167,9 +172,35 @@
         self.showDateItem.state = NSOffState;
     }
     
+    if ([defaults objectForKey:CONFIG_ALARM_MODE] != nil) {
+        if ([defaults boolForKey:CONFIG_ALARM_MODE] == YES) {
+            [self.alarmModeItem setState:NSOnState];
+            [[self.mainView render] drawAlarmDate:self.alarmDatePicker.dateValue];
+        }
+    }
+    
     [[self.mainView render] drawDate:showDate];
     
     [self setFrame:frame display:YES];
+}
+
+- (IBAction)toggleAlarm:(id)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if (self.alarmModeItem.state == NSOnState) {
+        // Turn off alarm
+        [self.alarmModeItem setState:NSOffState];
+        [[self.mainView render] drawAlarmDate:nil];
+        [defaults setBool:NO forKey:CONFIG_ALARM_MODE];
+    } else {
+        // Turn on alarm
+        [self.alarmModeItem setState:NSOnState];
+        [[self.mainView render] drawAlarmDate:self.alarmDatePicker.dateValue];
+        [defaults setBool:YES forKey:CONFIG_ALARM_MODE];
+    }
+    
+    [defaults synchronize];
+    self.mainView.needsDisplay = YES;
 }
 
 - (void)drawAnimation:(NSNumber *)anim {
@@ -194,7 +225,7 @@
     
     // Check if a second went by
     NSDate *now = [NSDate date];
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSSecondCalendarUnit fromDate:now];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:now];
     static NSInteger lastSec = -1;
     if (lastSec == [components second]) {
         return;
@@ -204,11 +235,13 @@
     [[self.mainView render] drawWithDate:now];
     [[self.mainView render] blinkDots];
     
-    NSTimeInterval in = [now timeIntervalSinceDate:self.alarmDatePicker.dateValue];
-    if ((in >= -0.5) && (in <= 0.5)) {
-        // We have reached the alarm time
-        NSLog(@"Alarm time reached!");
-        [self drawAnimation:[NSNumber numberWithInteger:1]];
+    if (self.alarmModeItem.state == NSOnState) {
+        NSDateComponents *alarmComponents = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:self.alarmDatePicker.dateValue];
+        if (([components minute] == [alarmComponents minute]) && ([components hour] == [alarmComponents hour]) && ([components second] == 0)) {
+            // We have reached the alarm time
+            NSLog(@"Alarm time reached!");
+            [self drawAnimation:[NSNumber numberWithInteger:1]];
+        }
     }
     
     self.mainView.needsDisplay = YES;
@@ -235,8 +268,14 @@
 }
 
 - (IBAction)alarmDateSelected:(id)sender {
-    [[self.mainView render] drawAlarmDate:self.alarmDatePicker.dateValue];
-    self.mainView.needsDisplay = YES;
+    // Update text representation
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:self.alarmDatePicker.dateValue];
+    [self.alarmTextItem setTitle:[NSString stringWithFormat:@"%02ld:%02ld", (long)[components hour], (long)[components minute]]];
+    
+    if (self.alarmModeItem.state == NSOnState) {
+        [[self.mainView render] drawAlarmDate:self.alarmDatePicker.dateValue];
+        self.mainView.needsDisplay = YES;
+    }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:self.alarmDatePicker.dateValue forKey:CONFIG_ALARM_TIME];

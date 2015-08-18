@@ -84,6 +84,8 @@
             </view>
             <connections>
                 <outlet property="alarmDatePicker" destination="A2I-e6-ur5" id="wh1-Z1-r9q"/>
+                <outlet property="alarmModeItem" destination="S8W-ak-RY9" id="cdh-MO-cra"/>
+                <outlet property="alarmTextItem" destination="Sk9-Xp-wdP" id="s0c-OH-mqZ"/>
                 <outlet property="changeSize1" destination="Acr-Ff-Lm2" id="qUp-XP-Ffo"/>
                 <outlet property="changeSize10" destination="eMz-8d-XLg" id="Ppm-Gu-5xS"/>
                 <outlet property="changeSize2" destination="sRn-WM-cKW" id="luN-Dk-xw4"/>
@@ -113,6 +115,9 @@
                             </menuItem>
                             <menuItem title="Alarm Mode" id="S8W-ak-RY9">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleAlarm:" target="QvC-M9-y7g" id="nMc-tu-sCH"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Show Date" id="0Cy-4I-9bF">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -253,6 +258,9 @@
                             <menuItem title="Item" id="IRB-i7-bez">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
+                            <menuItem title="Item" enabled="NO" id="Sk9-Xp-wdP">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -273,9 +281,9 @@
             <point key="canvasLocation" x="292.5" y="80.5"/>
         </menu>
         <datePicker verticalHuggingPriority="750" id="A2I-e6-ur5">
-            <rect key="frame" x="0.0" y="0.0" width="200" height="31"/>
+            <rect key="frame" x="0.0" y="0.0" width="125" height="127"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="aSU-YP-y5q">
+            <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="aSU-YP-y5q">
                 <font key="font" metaFont="system"/>
                 <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                     <!--1982-02-12 16:00:00 +0000-->
@@ -283,12 +291,12 @@
                 </calendarDate>
                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                <datePickerElements key="datePickerElements" year="YES" month="YES" day="YES" hour="YES" minute="YES" second="YES"/>
+                <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
             </datePickerCell>
             <connections>
                 <action selector="alarmDateSelected:" target="QvC-M9-y7g" id="ghc-DM-FuW"/>
             </connections>
-            <point key="canvasLocation" x="121.5" y="377"/>
+            <point key="canvasLocation" x="284" y="354.5"/>
         </datePicker>
     </objects>
 </document>
