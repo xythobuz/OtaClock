@@ -88,6 +88,7 @@
     self = [super initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
     if (self != nil) {
         [self setAlphaValue:1.0];
+        [self setBackgroundColor:[NSColor clearColor]];
         [self setOpaque:NO];
         lastEyeState = EYE_TOP_LEFT;
         currentlyBlinking = NO;
